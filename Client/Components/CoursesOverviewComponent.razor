@@ -1,0 +1,27 @@
+﻿@using CursusAdministratie2021.Shared.DTO
+
+@if (Courses is not null) {
+    <table>
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>Duur</th>
+                <th>Titel</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Courses) {
+                <tr>
+                    <td>@course.StartDate.ToString("d/MM/yyyy")</td>
+                    <td>@course.Duration</td>
+                    <td>@course.Title</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<CourseOverview> Courses { get; set; }
+}

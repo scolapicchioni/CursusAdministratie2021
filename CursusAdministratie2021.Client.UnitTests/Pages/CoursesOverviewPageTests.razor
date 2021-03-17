@@ -1,0 +1,58 @@
+﻿@inherits TestComponentBase
+@using CursusAdministratie2021.Shared.DTO
+@using CursusAdministratie2021.Shared.Interfaces
+@using Moq
+
+@code {
+    Mock<ICoursesOverviewService> coursesOverviewServiceMock;
+    void Start(Fixture fixture) {
+        coursesOverviewServiceMock = new ();
+        fixture.Services.AddSingleton<ICoursesOverviewService>(coursesOverviewServiceMock.Object);
+    }
+}
+
+<Fixture Setup="@Setup_ShouldInvoke_CoursesService_GetCoursesOverview"
+         Test="@ShouldInvoke_CoursesService_GetCoursesOverview"
+         Description="ShouldInvoke_CoursesService_GetCoursesOverview" >
+<ComponentUnderTest>
+    <CoursesOverviewPage></CoursesOverviewPage>
+  </ComponentUnderTest>
+
+@code {
+    
+    void Setup_ShouldInvoke_CoursesService_GetCoursesOverview(Fixture fixture) {
+        Start(fixture);
+    }
+    void ShouldInvoke_CoursesService_GetCoursesOverview(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
+        coursesOverviewServiceMock.Verify(cos => cos.GetCoursesOverview());
+    }
+}
+</Fixture>
+
+<Fixture Setup="@Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent"
+         Test="@Test_ShouldSetCoursesParameterOfCoursesOverviewComponent"
+         Description="Should Set Courses Parameter Of CoursesOverviewComponent" >
+<ComponentUnderTest>
+    <CoursesOverviewPage></CoursesOverviewPage>
+  </ComponentUnderTest>
+
+@code {
+    List<CourseOverview> expectedCourses; 
+    void Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent(Fixture fixture) {
+        Start(fixture);
+        expectedCourses = new List<CourseOverview> {
+            new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
+            new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
+            new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
+        };
+        coursesOverviewServiceMock.Setup(cos => cos.GetCoursesOverview()).ReturnsAsync(expectedCourses);
+    }
+    void Test_ShouldSetCoursesParameterOfCoursesOverviewComponent(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
+        
+        var coc = cut.FindComponent<CoursesOverviewComponent>();
+        Assert.Equal(expectedCourses, coc.Instance.Courses);
+    }
+}
+</Fixture>

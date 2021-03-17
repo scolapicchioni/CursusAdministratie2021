@@ -1,0 +1,59 @@
+﻿@using CursusAdministratie2021.Shared.DTO
+@inherits TestComponentBase
+
+<SnapshotTest Setup="@Setup_WithCourses" Description="Should Render Table With Courses">
+  <TestInput>
+    <CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
+  </TestInput>
+  <ExpectedOutput>
+    <table>
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>Duur</th>
+                <th>Titel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15-03-2021</td>
+                <td>3</td>
+                <td>C#</td>
+            </tr>
+            <tr>
+                <td>10-03-2021</td>
+                <td>5</td>
+                <td>JPA</td>
+            </tr>
+            <tr>
+                <td>8-03-2021</td>
+                <td>3</td>
+                <td>Azure</td>
+            </tr>
+        </tbody>
+    </table>
+  </ExpectedOutput>
+</SnapshotTest>
+
+<SnapshotTest Setup="@Setup_WithNullCourses" Description="Should Render Nothing When Courses is null">
+  <TestInput>
+    <CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
+  </TestInput>
+  <ExpectedOutput>
+  </ExpectedOutput>
+</SnapshotTest>
+
+
+@code {
+    List<CourseOverview> Courses;
+    void Setup_WithCourses(SnapshotTest test) {
+        Courses = new List<CourseOverview> {
+            new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
+            new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
+            new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
+        };
+    }
+    void Setup_WithNullCourses(SnapshotTest test) {
+        Courses = null;
+    }
+}

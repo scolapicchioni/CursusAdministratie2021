@@ -1,0 +1,13 @@
+﻿@using CursusAdministratie2021.Shared.DTO
+@using CursusAdministratie2021.Shared.Interfaces
+@inject ICoursesOverviewService coursesOverviewService
+
+@page "/courses-overview"
+<CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
+
+@code {
+    IEnumerable<CourseOverview> Courses;
+    protected override async Task OnInitializedAsync() {
+        Courses = await coursesOverviewService.GetCoursesOverview();
+    }
+}

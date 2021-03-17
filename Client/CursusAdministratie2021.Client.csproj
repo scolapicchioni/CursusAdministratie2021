@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CursusAdministratie2021.Client.Infrastructure\CursusAdministratie2021.Client.Infrastructure.csproj" />
     <ProjectReference Include="..\Shared\CursusAdministratie2021.Shared.csproj" />
   </ItemGroup>
 

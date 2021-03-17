@@ -6,6 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using CursusAdministratie2021.Shared.Interfaces;
+using CursusAdministratie2021.Shared.Services;
+using CursusAdministratie2021.Server.Infrastructure.Repositories;
+using CursusAdministratie2021.Server.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CursusAdministratie2021.Server
 {
@@ -22,7 +27,11 @@ namespace CursusAdministratie2021.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CoursesAdministrationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CoursesAdministrationDbContext")));
 
+            services.AddScoped<ICoursesOverviewRepository, CoursesOverviewRepositoryEF>();
+            services.AddScoped<ICoursesOverviewService, CoursesOverviewService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
