@@ -1,11 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CursusAdministratie2021.Client.Core\CursusAdministratie2021.Client.Core.csproj" />
     <ProjectReference Include="..\Shared\CursusAdministratie2021.Shared.csproj" />
   </ItemGroup>
 

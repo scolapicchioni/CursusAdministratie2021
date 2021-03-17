@@ -11,6 +11,8 @@ using CursusAdministratie2021.Shared.Services;
 using CursusAdministratie2021.Server.Infrastructure.Repositories;
 using CursusAdministratie2021.Server.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using CursusAdministratie2021.Server.Core.Interfaces;
+using CursusAdministratie2021.Server.Core.Services;
 
 namespace CursusAdministratie2021.Server
 {
@@ -32,6 +34,10 @@ namespace CursusAdministratie2021.Server
 
             services.AddScoped<ICoursesOverviewRepository, CoursesOverviewRepositoryEF>();
             services.AddScoped<ICoursesOverviewService, CoursesOverviewService>();
+
+            services.AddScoped<ICoursesImporterRepository, CoursesImporterRepositoryEF>();
+            services.AddScoped<ICoursesImporterService, CoursesImporterService>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

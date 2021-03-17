@@ -1,0 +1,39 @@
+﻿@using CursusAdministratie2021.Client.Core.CourseParsers
+@using Microsoft.Extensions.Options
+@using Moq
+@using System.IO
+@using Bunit.JSInterop
+@inherits TestComponentBase
+
+@code {
+    Mock<ICourseParser> courseParserMock;
+    void Start(Fixture fixture) {
+        courseParserMock = new ();
+        fixture.Services.AddSingleton<ICourseParser>(courseParserMock.Object);
+
+        var optionsMock = new Mock<IOptions<RemoteBrowserFileStreamOptions>>();
+        fixture.Services.AddSingleton<IOptions<RemoteBrowserFileStreamOptions>>(optionsMock.Object);
+        fixture.JSInterop.SetupVoid("Blazor._internal.InputFile.init", x => true);
+    }
+}
+
+<Fixture Setup="@Setup_ShouldInvoke_CourseParser_Parse"
+         Test="@ShouldInvoke_CourseParser_Parse"
+         Description="Should Invoke CourseParser.Parse" >
+<ComponentUnderTest>
+    <CoursesParserComponent></CoursesParserComponent>
+  </ComponentUnderTest>
+
+@code {
+
+    void Setup_ShouldInvoke_CourseParser_Parse(Fixture fixture) {
+        Start(fixture);
+    }
+    void ShouldInvoke_CourseParser_Parse(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
+        var inputfilecomponent = cut.FindComponent<InputFile>();
+        
+        courseParserMock.Verify(cp => cp.ParseAsync(It.IsAny<Stream>()));
+    }
+}
+</Fixture>

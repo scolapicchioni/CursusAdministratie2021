@@ -10,6 +10,10 @@ using Microsoft.Extensions.Logging;
 using CursusAdministratie2021.Shared.Services;
 using CursusAdministratie2021.Shared.Interfaces;
 using CursusAdministratie2021.Client.Infrastructure.Repositories;
+using CursusAdministratie2021.Client.Core.CourseParsers;
+using CursusAdministratie2021.Client.Core.CourseParsers.CoursePropertyParsers;
+using CursusAdministratie2021.Client.Core.Interfaces;
+using CursusAdministratie2021.Client.Core.Services;
 
 namespace CursusAdministratie2021.Client
 {
@@ -23,6 +27,11 @@ namespace CursusAdministratie2021.Client
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<ICoursesOverviewService,CoursesOverviewService>();
             builder.Services.AddScoped<ICoursesOverviewRepository, CoursesOverviewRepositoryRestClient>();
+
+            builder.Services.AddTransient<ICourseParser>(sp => new CourseParser(new CourseTitleParser(), new CourseCodeParser(), new CourseDurationParser(), new CourseStartDateParser(), new EmptyLineParser()));
+
+            builder.Services.AddScoped<ICoursesImporterService, CoursesImporterService>();
+            builder.Services.AddScoped<ICoursesImporterRepository, CoursesImporterRepositoryRestClient>();
 
             await builder.Build().RunAsync();
         }

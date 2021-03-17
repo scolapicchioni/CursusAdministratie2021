@@ -1,0 +1,58 @@
+﻿@using System.IO
+@using CursusAdministratie2021.Client.Core.CourseParsers
+@using CursusAdministratie2021.Shared.Models
+@inject ICourseParser courseParser
+
+<InputFile OnChange="@ParseFile" />
+
+@if (courses is not null) {
+<table>
+    <thead>
+        <tr></tr>
+    </thead>
+    <tbody>
+        @foreach(var course in courses) {
+            <tr>
+                <td>@course.Code</td>
+                <td>@course.Title</td>
+                <td>@course.Duration</td>
+                <td>
+                    <ul>
+                    @foreach(var edition in course.Editions) {
+                        <li>@edition.StartDate.ToString("d/MM/yyyy")</li>        
+                    }
+                    </ul>
+                </td>
+            </tr>            
+        }
+    </tbody>
+</table>    
+
+}
+<p>@exceptionMessage</p>
+
+@code {
+    [Parameter]
+    public EventCallback<List<Course>> OnCoursesParsed { get; set; }
+
+    string exceptionMessage;
+    List<Course> courses;
+
+    async Task ParseFile(InputFileChangeEventArgs e)
+    {
+        exceptionMessage = string.Empty;
+
+        try
+        {
+            courses = await courseParser.ParseAsync(e.File.OpenReadStream(e.File.Size));
+            exceptionMessage = "";
+            await OnCoursesParsed.InvokeAsync(courses);
+        }
+        catch (Exception ex)
+        {
+            courses = null;
+            exceptionMessage = $"{ex.Message} - {ex.InnerException.Message}";
+        }
+
+    }
+}
