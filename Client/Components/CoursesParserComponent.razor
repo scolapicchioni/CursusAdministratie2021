@@ -5,19 +5,22 @@
 @inject ICourseParser courseParser
 @inject ICalendarHelper calendarHelper;
 
+<section class="filter">
 <InputFile OnChange="@ParseFile" />
-<div>
-<label>From
-    <YearWeekToolbarComponent @bind-Year="@yearFrom" @bind-Week="@weekFrom" YearWeekChanged="FromChanged"></YearWeekToolbarComponent>
-</label>
-<label>To
-    <YearWeekToolbarComponent @bind-Year="@yearTo" @bind-Week="@weekTo" YearWeekChanged="ToChanged"></YearWeekToolbarComponent>
-</label>
-</div>
+<label>Van</label>
+<YearWeekToolbarComponent @bind-Year="@yearFrom" @bind-Week="@weekFrom" YearWeekChanged="FromChanged"></YearWeekToolbarComponent>
+<label>Tot</label>
+<YearWeekToolbarComponent @bind-Year="@yearTo" @bind-Week="@weekTo" YearWeekChanged="ToChanged"></YearWeekToolbarComponent>
+</section>
 @if (courses is not null) {
 <table>
     <thead>
-        <tr></tr>
+        <tr>
+            <th>Code</th>
+            <th>Titel</th>
+            <th>Duur</th>
+            <th>Instanties</th>
+        </tr>
     </thead>
     <tbody>
         @foreach(var course in courses) {

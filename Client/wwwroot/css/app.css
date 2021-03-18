@@ -1,33 +1,67 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+:root {
+    --primary-bg-color: #0094ff;
+    --primary-color: white;
+    --primary-bg-color--hover: #004dff;
+    --primary-bg-color--light: #daefff;
+    --primary-color--light: black;
+    --font-size: 1rem;
+    --box-shadow: 5px 5px 5px rgba(0,0,0,.5);
+}
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding:0;
+    margin:0;
+    font-family: Quicksand, Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    line-height:  1.6rem ;
+}
+label {
+    font-weight: bold;
+}
+button {
+    font-family: inherit;
+    font-weight: bold;
+    padding: 1rem;
+    background-color: var(--primary-bg-color);
+    color: var(--primary-color);
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    border: 1px solid rgba(0,0,0,.5);
+    transition: all 1s;
+}
+    button:hover {
+        background-color: var(--primary-bg-color--hover);
+        text-shadow: 1px 1px 5px  rgba(255,255,255,0.5);
+    }
+
+input {
+    font-family: inherit;
+    padding: 1rem;
+}
+input[type=number] {
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+    border: 1px solid rgba(0,0,0,.5);
 }
 
-a, .btn-link {
-    color: #0366d6;
+table {
+    width:100%;
+    margin: 1rem 0;
+}
+th {
+    background-color: var(--primary-bg-color);
+    color: var(--primary-color);
+    padding: 1rem;
+    margin: 1px;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
+td {
+    background-color: var(--primary-bg-color--light);
+    color: var(--primary-color--light);
+    padding: 1rem;
+    margin: 1px;
 }
 
 #blazor-error-ui {

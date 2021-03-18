@@ -5,8 +5,10 @@
 @inject ICalendarHelper calendarHelper
 @inject NavigationManager NavigationManager
 
-@page "/courses-overview/{yearNumber:int}/{weekNumber:int}"
+@page "/"
 @page "/courses-overview"
+@page "/courses-overview/{yearNumber:int}/{weekNumber:int}"
+
 <YearWeekToolbarComponent @bind-Year="YearNumber" @bind-Week="WeekNumber" YearWeekChanged="GetCourses"></YearWeekToolbarComponent>
 <CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
 
