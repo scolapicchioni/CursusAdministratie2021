@@ -9,5 +9,9 @@ namespace CursusAdministratie2021.Client.Core.CourseParsers {
         Task<List<Course>> ParseAsync(Stream stream);
 
         Task<List<Course>> ParseAsync(Stream stream, DateTime from, DateTime to);
+
+        List<Course> Parse(string content);
+
+        List<Course> Parse(string content, DateTime from, DateTime to);
     }
 }

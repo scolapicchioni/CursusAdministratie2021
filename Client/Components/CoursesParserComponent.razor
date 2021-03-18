@@ -1,10 +1,19 @@
 ﻿@using System.IO
 @using CursusAdministratie2021.Client.Core.CourseParsers
+@using CursusAdministratie2021.Shared.CalendarHelpers
 @using CursusAdministratie2021.Shared.Models
 @inject ICourseParser courseParser
+@inject ICalendarHelper calendarHelper;
 
 <InputFile OnChange="@ParseFile" />
-
+<div>
+<label>From
+    <YearWeekToolbarComponent @bind-Year="@yearFrom" @bind-Week="@weekFrom" YearWeekChanged="FromChanged"></YearWeekToolbarComponent>
+</label>
+<label>To
+    <YearWeekToolbarComponent @bind-Year="@yearTo" @bind-Week="@weekTo" YearWeekChanged="ToChanged"></YearWeekToolbarComponent>
+</label>
+</div>
 @if (courses is not null) {
 <table>
     <thead>
@@ -27,8 +36,9 @@
         }
     </tbody>
 </table>    
-
 }
+
+
 <p>@exceptionMessage</p>
 
 @code {
@@ -37,22 +47,55 @@
 
     string exceptionMessage;
     List<Course> courses;
+    string fileContent;
 
-    async Task ParseFile(InputFileChangeEventArgs e)
-    {
+    int yearFrom, yearTo;
+    int weekFrom, weekTo;
+
+    protected override void OnInitialized() {
+        yearFrom = calendarHelper.GetCurrentYear();
+        weekFrom = calendarHelper.GetCurrentWeekOfYear();
+        yearTo = calendarHelper.GetCurrentYear() + 1;
+        weekTo = calendarHelper.GetCurrentWeekOfYear();
+    }
+
+    async Task FromChanged() {
+        if (yearFrom > yearTo)
+            yearTo = yearFrom;
+        if (yearFrom == yearTo && weekFrom > weekTo)
+            weekTo = weekFrom;
+        await ParseString();
+    }
+    async Task ToChanged() {
+        if (yearFrom > yearTo)
+            yearFrom = yearTo;
+        if (yearFrom == yearTo && weekFrom > weekTo)
+            weekFrom = weekTo;
+        await ParseString();
+    }
+
+    async Task ParseString() {
         exceptionMessage = string.Empty;
 
         try
         {
-            courses = await courseParser.ParseAsync(e.File.OpenReadStream(e.File.Size));
-            exceptionMessage = "";
-            await OnCoursesParsed.InvokeAsync(courses);
+            if (fileContent is not null) {
+                courses = courseParser.Parse(fileContent, calendarHelper.GetWeekRange(yearFrom, weekFrom).begin, calendarHelper.GetWeekRange(yearTo, weekTo).end);
+                exceptionMessage = "";
+                if (OnCoursesParsed.HasDelegate) await OnCoursesParsed.InvokeAsync(courses);
+            } 
         }
         catch (Exception ex)
         {
             courses = null;
-            exceptionMessage = $"{ex.Message} - {ex.InnerException.Message}";
+            exceptionMessage = $"{ex.Message} - {ex.InnerException?.Message}";
         }
+    }
 
+    async Task ParseFile(InputFileChangeEventArgs e)
+    {
+        using StreamReader reader = new StreamReader(e.File.OpenReadStream(e.File.Size));
+        fileContent = await reader.ReadToEndAsync();
+        await ParseString();
     }
 }

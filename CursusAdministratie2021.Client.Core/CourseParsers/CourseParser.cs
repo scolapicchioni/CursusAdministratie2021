@@ -25,13 +25,19 @@ namespace CursusAdministratie2021.Client.Core.CourseParsers {
         public async Task<List<Course>> ParseAsync(Stream stream) => await ParseAsync(stream, DateTime.MinValue, DateTime.MaxValue);
 
         public async Task<List<Course>> ParseAsync(Stream stream, DateTime from, DateTime to) {
-            List<Course> courses = new List<Course>();
-            int lineNumber = 0;
             using StreamReader reader = new StreamReader(stream);
             string streamContent = await reader.ReadToEndAsync();
-            string[] lines = streamContent.Split(Environment.NewLine);
+            return Parse(streamContent);
+        }
+
+        public List<Course> Parse(string content) => Parse(content, DateTime.MinValue, DateTime.MaxValue);
+
+        public List<Course> Parse(string content, DateTime from, DateTime to) {
+            List<Course> courses = new List<Course>();
+            int lineNumber = 0;
+            string[] lines = content.Split(Environment.NewLine);
             try {
-                while (lineNumber<lines.Length-1) {
+                while (lineNumber < lines.Length - 1) {
                     string titleString = lines[lineNumber];
                     string title = titleParser.Parse(titleString);
                     lineNumber++;
@@ -66,7 +72,7 @@ namespace CursusAdministratie2021.Client.Core.CourseParsers {
                     }
                 }
             } catch (ValidationException ex) {
-                ValidationException toBeThrown = new ValidationException($"Bestand is niet in correct formaat op regel {lineNumber+1}.", ex);
+                ValidationException toBeThrown = new ValidationException($"Bestand is niet in correct formaat op regel {lineNumber + 1}.", ex);
                 throw toBeThrown;
             }
 

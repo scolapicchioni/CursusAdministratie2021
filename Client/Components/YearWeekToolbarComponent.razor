@@ -1,8 +1,8 @@
 ﻿@using CursusAdministratie2021.Shared.CalendarHelpers
 @inject ICalendarHelper calendarHelper
 <button id="previous" @onclick="@(()=>changeYearWeekAsync(Year,Week-1))">◀</button>
-<input type="number" id="Year" value="@Year"  @onchange="YearChangedAsync" />
 <input type="number" id="Week" value="@Week" @onchange="WeekChangedAsync"/>
+<input type="number" id="Year" value="@Year"  @onchange="YearChangedAsync" />
 <button id="next" @onclick="@(()=>changeYearWeekAsync(Year,Week+1))">▶</button>
 @code {
     [Parameter]
