@@ -1,54 +1,110 @@
 ﻿@inherits TestComponentBase
+@using CursusAdministratie2021.Shared.CalendarHelpers
 @using CursusAdministratie2021.Shared.DTO
 @using CursusAdministratie2021.Shared.Interfaces
 @using Moq
 
 @code {
     Mock<ICoursesOverviewService> coursesOverviewServiceMock;
+    Mock<ICalendarHelper> calendarHelperMock;
+    int yearNumber = 2021;
+    int weekNumber = 5;
+    List<CourseOverview> expectedCourses; 
     void Start(Fixture fixture) {
-        coursesOverviewServiceMock = new ();
+        coursesOverviewServiceMock = new();
+        calendarHelperMock = new();
+        calendarHelperMock.Setup(ch => ch.GetCurrentWeekOfYear()).Returns(weekNumber);
+        calendarHelperMock.Setup(ch => ch.GetCurrentYear()).Returns(yearNumber);
         fixture.Services.AddSingleton<ICoursesOverviewService>(coursesOverviewServiceMock.Object);
+        fixture.Services.AddSingleton<ICalendarHelper>(calendarHelperMock.Object);
     }
 }
 
-<Fixture Setup="@Setup_ShouldInvoke_CoursesService_GetCoursesOverview"
-         Test="@ShouldInvoke_CoursesService_GetCoursesOverview"
-         Description="ShouldInvoke_CoursesService_GetCoursesOverview" >
+<Fixture Setup="@Setup_ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekNotSet"
+         Test="@ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekNotSet"
+         Description="ShouldInvoke_CoursesService_GetCoursesOverviewPerWeek_WhenYearWeekNotSet" >
 <ComponentUnderTest>
     <CoursesOverviewPage></CoursesOverviewPage>
   </ComponentUnderTest>
 
 @code {
     
-    void Setup_ShouldInvoke_CoursesService_GetCoursesOverview(Fixture fixture) {
+    void Setup_ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekNotSet(Fixture fixture) {
         Start(fixture);
     }
-    void ShouldInvoke_CoursesService_GetCoursesOverview(Fixture fixture) {
+    void ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekNotSet(Fixture fixture) {
         var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
-        coursesOverviewServiceMock.Verify(cos => cos.GetCoursesOverview());
+        coursesOverviewServiceMock.Verify(cos => cos.GetCoursesPerWeek(yearNumber, weekNumber));
     }
 }
 </Fixture>
 
-<Fixture Setup="@Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent"
-         Test="@Test_ShouldSetCoursesParameterOfCoursesOverviewComponent"
-         Description="Should Set Courses Parameter Of CoursesOverviewComponent" >
+<Fixture Setup="@Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekNotSet"
+         Test="@Test_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekNotSet"
+         Description="Should Set Courses Parameter Of CoursesOverviewComponent WhenYearWeekNotSet" >
 <ComponentUnderTest>
     <CoursesOverviewPage></CoursesOverviewPage>
   </ComponentUnderTest>
 
 @code {
-    List<CourseOverview> expectedCourses; 
-    void Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent(Fixture fixture) {
+
+    void Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekNotSet(Fixture fixture) {
         Start(fixture);
         expectedCourses = new List<CourseOverview> {
             new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
             new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
             new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
         };
-        coursesOverviewServiceMock.Setup(cos => cos.GetCoursesOverview()).ReturnsAsync(expectedCourses);
+        coursesOverviewServiceMock.Setup(cos => cos.GetCoursesPerWeek(yearNumber,weekNumber)).ReturnsAsync(expectedCourses);
     }
-    void Test_ShouldSetCoursesParameterOfCoursesOverviewComponent(Fixture fixture) {
+    void Test_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekNotSet(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
+        
+        var coc = cut.FindComponent<CoursesOverviewComponent>();
+        Assert.Equal(expectedCourses, coc.Instance.Courses);
+    }
+}
+</Fixture>
+
+<Fixture Setup="@Setup_ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekSet"
+         Test="@ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekSet"
+         Description="ShouldInvoke_CoursesService_GetCoursesOverviewPerWeek_WhenYearWeekSet" >
+<ComponentUnderTest>
+    <CoursesOverviewPage YearNumber="1234" WeekNumber="12"></CoursesOverviewPage>
+  </ComponentUnderTest>
+
+@code {
+    
+    void Setup_ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekSet(Fixture fixture) {
+        Start(fixture);
+    }
+    void ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekSet(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
+        coursesOverviewServiceMock.Verify(cos => cos.GetCoursesPerWeek(1234, 12));
+    }
+}
+</Fixture>
+
+
+<Fixture Setup="@Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekSet"
+         Test="@Test_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekSet"
+         Description="Should Set Courses Parameter Of CoursesOverviewComponent WhenYearWeekSet" >
+<ComponentUnderTest>
+    <CoursesOverviewPage YearNumber="1234" WeekNumber="12"></CoursesOverviewPage>
+  </ComponentUnderTest>
+
+@code {
+    void Setup_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekSet(Fixture fixture) {
+        Start(fixture);
+
+        expectedCourses = new List<CourseOverview> {
+            new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
+            new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
+            new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
+        };
+        coursesOverviewServiceMock.Setup(cos => cos.GetCoursesPerWeek(1234,12)).ReturnsAsync(expectedCourses);
+    }
+    void Test_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekSet(Fixture fixture) {
         var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
         
         var coc = cut.FindComponent<CoursesOverviewComponent>();

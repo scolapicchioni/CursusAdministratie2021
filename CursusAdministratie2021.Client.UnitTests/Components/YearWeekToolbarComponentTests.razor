@@ -1,0 +1,105 @@
+﻿@using CursusAdministratie2021.Shared.CalendarHelpers
+@using Moq
+@inherits TestComponentBase
+
+@code {
+    Mock<ICalendarHelper> calendarHelperMock;
+    int Year = 2000;
+    int Week = 2;
+    void Start(Fixture fixture) {
+        calendarHelperMock = new ();
+        fixture.Services.AddSingleton<ICalendarHelper>(calendarHelperMock.Object);
+    }
+}
+
+<Fixture Setup="@Setup_ShouldChangeWeek"
+         Test="@Should_ChangeWeek"
+         Description="Should Change Week When Week Textbox changes" >
+<ComponentUnderTest>
+    <YearWeekToolbarComponent @bind-Year="Year" @bind-Week="Week"></YearWeekToolbarComponent>
+  </ComponentUnderTest>
+
+@code {
+    void Setup_ShouldChangeWeek(Fixture fixture) {
+        Start(fixture);
+    }
+    void Should_ChangeWeek(Fixture fixture) {
+        int newWeek = 55;
+        int expectedWeek = 52;
+        calendarHelperMock.Setup(ch => ch.NormalizeWeekYearNumber(Year, newWeek)).Returns((Year, expectedWeek));
+        var cut = fixture.GetComponentUnderTest<YearWeekToolbarComponent>();
+        
+        var weekComponent = cut.Find("#Week");
+        weekComponent.Change(newWeek.ToString());
+        cut.WaitForAssertion(() => Assert.Equal(expectedWeek, Week));
+    }
+}
+</Fixture>
+
+<Fixture Setup="@Setup_ShouldChangeYear"
+         Test="@Should_ChangeYear"
+         Description="Should Change Year When Year Textbox changes" >
+<ComponentUnderTest>
+    <YearWeekToolbarComponent @bind-Year="Year" @bind-Week="Week"></YearWeekToolbarComponent>
+  </ComponentUnderTest>
+
+@code {
+    void Setup_ShouldChangeYear(Fixture fixture) {
+        Start(fixture);
+    }
+    void Should_ChangeYear(Fixture fixture) {
+        int newYear = 2001;
+        calendarHelperMock.Setup(ch => ch.NormalizeWeekYearNumber(newYear, Week)).Returns((newYear, Week));
+        var cut = fixture.GetComponentUnderTest<YearWeekToolbarComponent>();
+        var yearComponent = cut.Find("#Year");
+        yearComponent.Change(newYear.ToString());
+        cut.WaitForAssertion(() => Assert.Equal(newYear, Year));
+    }
+}
+</Fixture>
+
+<Fixture Setup="@Setup_Should_IncreaseWeek_WhenNextClicked"
+         Test="@Should_IncreaseWeek_WhenNextClicked"
+         Description="Should Increase Week When Next Clicked" >
+<ComponentUnderTest>
+    <YearWeekToolbarComponent @bind-Year="Year" @bind-Week="Week"></YearWeekToolbarComponent>
+  </ComponentUnderTest>
+
+@code {
+    void Setup_Should_IncreaseWeek_WhenNextClicked(Fixture fixture) {
+        Start(fixture);
+    }
+    void Should_IncreaseWeek_WhenNextClicked(Fixture fixture) {
+        int expectedWeek = 3;
+        calendarHelperMock.Setup(ch => ch.NormalizeWeekYearNumber(Year, expectedWeek)).Returns((Year, expectedWeek));
+        var cut = fixture.GetComponentUnderTest<YearWeekToolbarComponent>();
+        
+        var nextComponent = cut.Find("#next");
+        nextComponent.Click();
+        cut.WaitForAssertion(() => Assert.Equal(expectedWeek, Week));
+    }
+}
+</Fixture>
+
+<Fixture Setup="@Setup_Should_DecreaseWeek_WhenPreviousClicked"
+         Test="@Should_DecreaseWeek_WhenPreviousClicked"
+         Description="Should Increase Week When Previous Clicked" >
+<ComponentUnderTest>
+    <YearWeekToolbarComponent @bind-Year="Year" @bind-Week="Week"></YearWeekToolbarComponent>
+  </ComponentUnderTest>
+
+@code {
+    void Setup_Should_DecreaseWeek_WhenPreviousClicked(Fixture fixture) {
+        Start(fixture);
+    }
+    void Should_DecreaseWeek_WhenPreviousClicked(Fixture fixture) {
+        int expectedWeek = 1;
+        calendarHelperMock.Setup(ch => ch.NormalizeWeekYearNumber(Year, expectedWeek)).Returns((Year, expectedWeek));
+        var cut = fixture.GetComponentUnderTest<YearWeekToolbarComponent>();
+        
+        var nextComponent = cut.Find("#previous");
+        nextComponent.Click();
+        cut.WaitForAssertion(() => Assert.Equal(expectedWeek, Week));
+    }
+}
+</Fixture>

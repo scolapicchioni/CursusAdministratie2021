@@ -14,6 +14,7 @@ using CursusAdministratie2021.Client.Core.CourseParsers;
 using CursusAdministratie2021.Client.Core.CourseParsers.CoursePropertyParsers;
 using CursusAdministratie2021.Client.Core.Interfaces;
 using CursusAdministratie2021.Client.Core.Services;
+using CursusAdministratie2021.Shared.CalendarHelpers;
 
 namespace CursusAdministratie2021.Client
 {
@@ -32,6 +33,8 @@ namespace CursusAdministratie2021.Client
 
             builder.Services.AddScoped<ICoursesImporterService, CoursesImporterService>();
             builder.Services.AddScoped<ICoursesImporterRepository, CoursesImporterRepositoryRestClient>();
+
+            builder.Services.AddScoped<ICalendarHelper, CalendarHelper>();
 
             await builder.Build().RunAsync();
         }

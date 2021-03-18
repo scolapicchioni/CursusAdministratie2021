@@ -1,13 +1,33 @@
-﻿@using CursusAdministratie2021.Shared.DTO
+﻿@using CursusAdministratie2021.Shared.CalendarHelpers
+@using CursusAdministratie2021.Shared.DTO
 @using CursusAdministratie2021.Shared.Interfaces
 @inject ICoursesOverviewService coursesOverviewService
+@inject ICalendarHelper calendarHelper
+@inject NavigationManager NavigationManager
 
+@page "/courses-overview/{yearNumber:int}/{weekNumber:int}"
 @page "/courses-overview"
+<YearWeekToolbarComponent @bind-Year="YearNumber" @bind-Week="WeekNumber" YearWeekChanged="GetCourses"></YearWeekToolbarComponent>
 <CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
 
 @code {
+    [Parameter]
+    public int YearNumber { get; set; }
+    [Parameter]
+    public int WeekNumber { get; set; }
+
     IEnumerable<CourseOverview> Courses;
     protected override async Task OnInitializedAsync() {
-        Courses = await coursesOverviewService.GetCoursesOverview();
+        if (YearNumber == 0 || WeekNumber == 0) {
+            YearNumber = calendarHelper.GetCurrentYear();
+            WeekNumber = calendarHelper.GetCurrentWeekOfYear();
+            NavigationManager.NavigateTo($"/courses-overview/{YearNumber}/{WeekNumber}");
+        }
+        Courses = await coursesOverviewService.GetCoursesPerWeek(YearNumber,WeekNumber);
+    }
+
+    private async Task GetCourses() { 
+        NavigationManager.NavigateTo($"/courses-overview/{YearNumber}/{WeekNumber}");
+        Courses = await coursesOverviewService.GetCoursesPerWeek(YearNumber,WeekNumber);
     }
 }

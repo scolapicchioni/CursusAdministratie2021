@@ -5,5 +5,6 @@ using System.Threading.Tasks;
 namespace CursusAdministratie2021.Shared.Interfaces {
     public interface ICoursesOverviewRepository {
         Task<IEnumerable<CourseOverview>> GetCoursesOverview();
+        Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int yearNumber, int weekNumber);
     }
 }

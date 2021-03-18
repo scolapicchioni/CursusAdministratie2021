@@ -1,0 +1,46 @@
+﻿@using CursusAdministratie2021.Shared.CalendarHelpers
+@inject ICalendarHelper calendarHelper
+<button id="previous" @onclick="@(()=>changeYearWeekAsync(Year,Week-1))">◀</button>
+<input type="number" id="Year" value="@Year"  @onchange="YearChangedAsync" />
+<input type="number" id="Week" value="@Week" @onchange="WeekChangedAsync"/>
+<button id="next" @onclick="@(()=>changeYearWeekAsync(Year,Week+1))">▶</button>
+@code {
+    [Parameter]
+    public int Year { get; set; } 
+
+    [Parameter]
+    public int Week { get; set; } 
+
+    [Parameter]
+    public EventCallback<int> WeekChanged { get; set; }
+    [Parameter]
+    public EventCallback<int> YearChanged { get; set; }
+
+    [Parameter]
+    public EventCallback YearWeekChanged { get; set; }
+
+    private async Task WeekChangedAsync(ChangeEventArgs eventArgs) {
+        if (int.TryParse(eventArgs.Value.ToString(), out int result)) {
+            await changeYearWeekAsync(Year, result);
+        }
+    }
+
+    private async Task YearChangedAsync(ChangeEventArgs eventArgs) {
+        if (int.TryParse(eventArgs.Value.ToString(), out int result)) {
+            await changeYearWeekAsync(result, Week);
+        }
+    }
+
+    private async Task changeYearWeekAsync(int yn, int wn) {
+        (int newYearNumber, int newWeekNumber) = calendarHelper.NormalizeWeekYearNumber(yn, wn);
+        if (newYearNumber != Year && YearChanged.HasDelegate) {
+            await YearChanged.InvokeAsync(newYearNumber);
+        }
+        if (newWeekNumber != Week && WeekChanged.HasDelegate) {
+            await WeekChanged.InvokeAsync(newWeekNumber);
+        }
+        if (YearWeekChanged.HasDelegate) {
+            await YearWeekChanged.InvokeAsync(null);
+        }
+    }
+}

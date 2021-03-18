@@ -8,25 +8,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Shared", "Shared\CursusAdministratie2021.Shared.csproj", "{CA596411-16B2-427D-8319-C163AAB41CC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Client.UnitTests", "CursusAdministratie2021.Client.UnitTests\CursusAdministratie2021.Client.UnitTests.csproj", "{5B4E7BCD-2E8E-4B4C-9FEE-4F086282143C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Client.UnitTests", "CursusAdministratie2021.Client.UnitTests\CursusAdministratie2021.Client.UnitTests.csproj", "{5B4E7BCD-2E8E-4B4C-9FEE-4F086282143C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Shared.UnitTests", "CursusAdministratie2021.Shared.UnitTests\CursusAdministratie2021.Shared.UnitTests.csproj", "{D4606FA5-8BAC-4D8C-8E6B-A3A52D81B159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Shared.UnitTests", "CursusAdministratie2021.Shared.UnitTests\CursusAdministratie2021.Shared.UnitTests.csproj", "{D4606FA5-8BAC-4D8C-8E6B-A3A52D81B159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Client.Infrastructure", "CursusAdministratie2021.Client.Infrastructure\CursusAdministratie2021.Client.Infrastructure.csproj", "{05B6E66C-B127-4224-ABC7-9205BF88244B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Client.Infrastructure", "CursusAdministratie2021.Client.Infrastructure\CursusAdministratie2021.Client.Infrastructure.csproj", "{05B6E66C-B127-4224-ABC7-9205BF88244B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Server.UnitTests", "CursusAdministratie2021.Server.UnitTests\CursusAdministratie2021.Server.UnitTests.csproj", "{8EAD4889-0EEA-4249-BAAC-2A9763CCC9B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Server.UnitTests", "CursusAdministratie2021.Server.UnitTests\CursusAdministratie2021.Server.UnitTests.csproj", "{8EAD4889-0EEA-4249-BAAC-2A9763CCC9B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Server.Infrastructure", "CursusAdministratie2021.Server.Infrastructure\CursusAdministratie2021.Server.Infrastructure.csproj", "{E549B526-5399-4107-A12E-37B878A912EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Server.Infrastructure", "CursusAdministratie2021.Server.Infrastructure\CursusAdministratie2021.Server.Infrastructure.csproj", "{E549B526-5399-4107-A12E-37B878A912EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Server.Infrastructure.UnitTests", "CursusAdministratie2021.Server.Infrastructure.UnitTests\CursusAdministratie2021.Server.Infrastructure.UnitTests.csproj", "{EE018BEB-D7D0-46AF-AA90-A3320D8CCEB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Server.Infrastructure.UnitTests", "CursusAdministratie2021.Server.Infrastructure.UnitTests\CursusAdministratie2021.Server.Infrastructure.UnitTests.csproj", "{EE018BEB-D7D0-46AF-AA90-A3320D8CCEB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Client.Core", "CursusAdministratie2021.Client.Core\CursusAdministratie2021.Client.Core.csproj", "{025C141E-E43F-41DF-BE7E-A3897A325D8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Client.Core", "CursusAdministratie2021.Client.Core\CursusAdministratie2021.Client.Core.csproj", "{025C141E-E43F-41DF-BE7E-A3897A325D8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Server.Core", "CursusAdministratie2021.Server.Core\CursusAdministratie2021.Server.Core.csproj", "{D0B64123-BFCF-4B2C-B896-2D8FEC79A81A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Server.Core", "CursusAdministratie2021.Server.Core\CursusAdministratie2021.Server.Core.csproj", "{D0B64123-BFCF-4B2C-B896-2D8FEC79A81A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Server.Core.UnitTests", "CursusAdministratie2021.Server.Core.UnitTests\CursusAdministratie2021.Server.Core.UnitTests.csproj", "{885A654D-8837-4FEB-AB41-732670BC38C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Server.Core.UnitTests", "CursusAdministratie2021.Server.Core.UnitTests\CursusAdministratie2021.Server.Core.UnitTests.csproj", "{885A654D-8837-4FEB-AB41-732670BC38C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CursusAdministratie2021.Client.Core.UnitTests", "CursusAdministratie2021.Client.Core.UnitTests\CursusAdministratie2021.Client.Core.UnitTests.csproj", "{27942798-EDFD-4A7B-8BF8-E75B0BE25D91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CursusAdministratie2021.Client.Core.UnitTests", "CursusAdministratie2021.Client.Core.UnitTests\CursusAdministratie2021.Client.Core.UnitTests.csproj", "{27942798-EDFD-4A7B-8BF8-E75B0BE25D91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

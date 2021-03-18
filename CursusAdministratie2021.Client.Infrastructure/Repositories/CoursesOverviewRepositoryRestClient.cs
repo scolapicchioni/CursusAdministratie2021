@@ -18,5 +18,9 @@ namespace CursusAdministratie2021.Client.Infrastructure.Repositories {
         public async Task<IEnumerable<CourseOverview>> GetCoursesOverview() {
             return await httpClient.GetFromJsonAsync<List<CourseOverview>>($"/api/coursesoverview");
         }
+
+        public async Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int yearNumber, int weekNumber) {
+            return await httpClient.GetFromJsonAsync<List<CourseOverview>>($"/api/coursesoverview/{yearNumber}/{weekNumber}");
+        }
     }
 }

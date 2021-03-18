@@ -26,5 +26,22 @@ namespace CursusAdministratie2021.Shared.UnitTests.Services {
 
             Assert.Equal(expectedCourses, actualCourses);
         }
+        [Fact]
+        public async Task GetCoursesPerWeek_ShouldReturn_ListOfCoursesReturnedByRepository() {
+            int yearNumber = 2021;
+            int weekNumber = 23;
+            Mock<ICoursesOverviewRepository> coursesOverviewRepositoryMock = new();
+            List<CourseOverview> expectedCourses = new List<CourseOverview>() {
+                new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
+                new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
+                new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
+            };
+            coursesOverviewRepositoryMock.Setup(cor => cor.GetCoursesPerWeek(yearNumber,weekNumber)).ReturnsAsync(expectedCourses);
+            CoursesOverviewService sut = new CoursesOverviewService(coursesOverviewRepositoryMock.Object);
+
+            IEnumerable<CourseOverview> actualCourses = await sut.GetCoursesPerWeek(yearNumber,weekNumber);
+
+            Assert.Equal(expectedCourses, actualCourses);
+        }
     }
 }
