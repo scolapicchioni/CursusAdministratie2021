@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CursusAdministratie2021.Shared.Models {
-    public class Edition {
+    public class Student {
         public int Id { get; set; }
-        public DateTime StartDate { get; set; }
-        public int CourseId { get; set; }
-        public ICollection<Student> Students { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+
+        public ICollection<Edition> Editions { get; set; }
     }
 }

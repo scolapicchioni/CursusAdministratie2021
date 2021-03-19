@@ -27,7 +27,7 @@ namespace CursusAdministratie2021.Client.Core.CourseParsers {
         public async Task<List<Course>> ParseAsync(Stream stream, DateTime from, DateTime to) {
             using StreamReader reader = new StreamReader(stream);
             string streamContent = await reader.ReadToEndAsync();
-            return Parse(streamContent);
+            return Parse(streamContent, from, to);
         }
 
         public List<Course> Parse(string content) => Parse(content, DateTime.MinValue, DateTime.MaxValue);

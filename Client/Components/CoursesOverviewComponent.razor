@@ -1,4 +1,5 @@
 ﻿@using CursusAdministratie2021.Shared.DTO
+@inject NavigationManager NavigationManager
 
 @if (Courses is not null) {
     <table>
@@ -7,6 +8,9 @@
                 <th>Start</th>
                 <th>Duur</th>
                 <th>Titel</th>
+                <th>Cursisten</th>
+                <th>Inschrijven</th>
+                <th>Presentielijst</th>
             </tr>
         </thead>
         <tbody>
@@ -15,6 +19,9 @@
                     <td>@course.StartDate.ToString("d/MM/yyyy")</td>
                     <td>@course.Duration</td>
                     <td>@course.Title</td>
+                    <td>@course.EnrollmentsCount</td>
+                    <td @onclick="@(()=>{if(course.EnrollmentsCount<12)NavigationManager.NavigateTo($"/enroll-to-edition/{course.EditionId}");})">@if (course.EnrollmentsCount < 12) {<text>➕</text>}</td>
+                    <td @onclick="@(()=>{if(course.EnrollmentsCount<12)NavigationManager.NavigateTo($"/students-list/{course.EditionId}");})">@if (course.EnrollmentsCount > 0) {<text>📄</text>}</td>
                 </tr>
             }
         </tbody>

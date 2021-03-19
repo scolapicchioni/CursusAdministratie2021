@@ -1,0 +1,21 @@
+﻿using CursusAdministratie2021.Client.Core.Interfaces;
+using CursusAdministratie2021.Shared.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CursusAdministratie2021.Client.Core.Services {
+    public class StudentsService : IStudentsService {
+        private readonly IStudentsRepository studentsRepository;
+
+        public StudentsService(IStudentsRepository studentsRepository) {
+            this.studentsRepository = studentsRepository;
+        }
+
+        public async Task<Student> CreateStudent(Student studentToAdd) => await studentsRepository.CreateStudent(studentToAdd);
+
+        public async Task<List<Student>> FindStudentsBy(string name, string surname) => await studentsRepository.FindStudentsBy(name, surname);
+    }
+}

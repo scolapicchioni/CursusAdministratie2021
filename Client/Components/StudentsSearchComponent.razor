@@ -1,0 +1,24 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@inject IStudentsService studentsService
+
+<section>
+    <label>Naam</label>
+    <input type="text" id="Name" @bind-value="Name" />
+    <label>Achternaam</label>
+    <input type="text" id="Surname" @bind-value="Surname" />
+    <button id="Search" @onclick="Search">Opzoeken</button>
+</section>
+
+@code {
+    string Name;
+    string Surname;
+
+    [Parameter]
+    public EventCallback<List<Student>> StudentsFound { get; set; }
+
+    async Task Search() {
+         List<Student> studentsFound = await studentsService.FindStudentsBy(Name, Surname);
+        if (StudentsFound.HasDelegate) await StudentsFound.InvokeAsync(studentsFound);
+    }
+}

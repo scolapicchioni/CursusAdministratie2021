@@ -1,0 +1,90 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@using Moq
+@inherits TestComponentBase
+
+
+<SnapshotTest Setup="@Setup_WithStudents" Description="Should Render Table With Students">
+  <TestInput>
+    <StudentSelectorComponent Students="Students"></StudentSelectorComponent>
+  </TestInput>
+  <ExpectedOutput>
+    <table>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Achternaam</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="student">
+                <td>Alice</td>
+                <td>Anderson</td>
+            </tr>
+            <tr class="student">
+                <td>Bob</td>
+                <td>Builders</td>
+            </tr>
+            <tr class="student">
+                <td>Candice</td>
+                <td>Clarkson</td>
+            </tr>
+        </tbody>
+    </table>
+  </ExpectedOutput>
+</SnapshotTest>
+
+
+@code {
+    List<Student> Students;
+    void Setup_WithStudents(SnapshotTest test) {
+        Students = new List<Student> {
+            new Student(){Name="Alice", Surname = "Anderson"},
+            new Student(){Name = "Bob", Surname = "Builders"},
+            new Student(){Name = "Candice", Surname = "Clarkson"}
+        };
+    }
+}
+
+
+
+@code {
+    void Start(Fixture fixture) {
+        Students = new List<Student> {
+            new Student(){Name="Alice", Surname = "Anderson"},
+            new Student(){Name = "Bob", Surname = "Builders"},
+            new Student(){Name = "Candice", Surname = "Clarkson"}
+        };
+    }
+}
+
+<Fixture Setup="@Setup_Should_SelectStudent_WhenRowClicked"
+         Test="@Should_SelectStudent_WhenRowClicked"
+         Description="Should Select Student When Row Clicked" >
+<ComponentUnderTest>
+    <StudentSelectorComponent Students="Students" StudentSelected="OnStudentSelected"></StudentSelectorComponent>
+  </ComponentUnderTest>
+
+@code {
+    Student actualStudent;
+    void Setup_Should_SelectStudent_WhenRowClicked(Fixture fixture) {
+        Start(fixture);
+    }
+    void OnStudentSelected(Student selectedStudent) {
+        actualStudent = selectedStudent;
+    }
+    void Should_SelectStudent_WhenRowClicked(Fixture fixture) {
+        Student expectedStudent = Students[0];
+        
+        var cut = fixture.GetComponentUnderTest<StudentSelectorComponent>();
+        
+        var studentRow = cut.FindAll(".student")[0];
+
+        studentRow.Click();
+
+        cut.WaitForAssertion(() => {
+                Assert.Equal(expectedStudent, actualStudent);
+        });
+    }
+}
+</Fixture>

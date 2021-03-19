@@ -43,5 +43,18 @@ namespace CursusAdministratie2021.Shared.UnitTests.Services {
 
             Assert.Equal(expectedCourses, actualCourses);
         }
+
+        [Fact]
+        public async Task GetCourseOverviewByEditionId_ShouldReturn_Course() {
+            CourseOverview expectedCourseOverview = new CourseOverview() { StartDate = new DateTime(2021, 3, 10), Duration = 5, Title = "JPA", EditionId = 2 };
+            Mock<ICoursesOverviewRepository> coursesOverviewRepositoryMock = new();
+
+            coursesOverviewRepositoryMock.Setup(cor => cor.GetCourseOverviewByEditionId(2)).ReturnsAsync(expectedCourseOverview);
+            CoursesOverviewService sut = new CoursesOverviewService(coursesOverviewRepositoryMock.Object);
+
+            CourseOverview actualCourse = await sut.GetCourseOverviewByEditionId(2);
+
+            Assert.Equal(expectedCourseOverview, actualCourse);
+        }
     }
 }

@@ -1,0 +1,53 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@using Moq
+@inherits TestComponentBase
+
+@code {
+    Mock<IStudentsService> studentsServiceMock;
+    void Start(Fixture fixture) {
+        studentsServiceMock = new ();
+        fixture.Services.AddSingleton<IStudentsService>(studentsServiceMock.Object);
+    }
+}
+
+<Fixture Setup="@Setup_Should_FindStudents"
+         Test="@Should_FindStudents"
+         Description="Should Find Students" >
+<ComponentUnderTest>
+    <StudentsSearchComponent StudentsFound="OnStudentsFound"></StudentsSearchComponent>
+  </ComponentUnderTest>
+
+@code {
+        List<Student> actualStudents;
+    void Setup_Should_FindStudents(Fixture fixture) {
+        Start(fixture);
+    }
+    void OnStudentsFound(List<Student> students) {
+        actualStudents = students;
+    }
+    void Should_FindStudents(Fixture fixture) {
+        string name = "StudentName";
+        string surname = "StudentSurname";
+        List<Student> expectedStudents = new() {
+            new() { Name = "StudentName1", Surname="StudentSurname1" }
+        };
+        studentsServiceMock.Setup(ss => ss.FindStudentsBy(name, surname)).ReturnsAsync(expectedStudents);
+
+
+        var cut = fixture.GetComponentUnderTest<StudentsSearchComponent>();
+        
+        var nameComponent = cut.Find("#Name");
+        var surnameComponent = cut.Find("#Surname");
+        var searchComponent = cut.Find("#Search");
+        nameComponent.Change(name);
+        surnameComponent.Change(surname);
+
+        searchComponent.Click();
+
+        cut.WaitForAssertion(() => {
+                Assert.Equal(expectedStudents, actualStudents);
+        });
+    }
+}
+</Fixture>

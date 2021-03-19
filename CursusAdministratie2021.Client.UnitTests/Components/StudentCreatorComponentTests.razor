@@ -1,0 +1,52 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@using Moq
+@inherits TestComponentBase
+
+@code {
+    Mock<IStudentsService> studentsServiceMock;
+    void Start(Fixture fixture) {
+        studentsServiceMock = new ();
+        fixture.Services.AddSingleton<IStudentsService>(studentsServiceMock.Object);
+    }
+}
+
+<Fixture Setup="@Setup_Should_AddStudent"
+         Test="@Should_AddStudent"
+         Description="Should Add Student" >
+<ComponentUnderTest>
+    <StudentCreatorComponent StudentCreated="OnStudentCreated"></StudentCreatorComponent>
+  </ComponentUnderTest>
+
+@code {
+    Student actualStudent;
+    void Setup_Should_AddStudent(Fixture fixture) {
+        Start(fixture);
+    }
+    void OnStudentCreated(Student student) {
+        actualStudent = student;
+    }
+    void Should_AddStudent(Fixture fixture) {
+        string name = "StudentName";
+        string surname = "StudentSurname";
+        Student expectedStudent = new() { Id = 1, Name = name, Surname= surname };
+        studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<Student>())).ReturnsAsync(expectedStudent);
+
+        var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
+        
+        var nameComponent = cut.Find("#Name");
+        var surnameComponent = cut.Find("#Surname");
+        var createComponent = cut.Find("#Create");
+        nameComponent.Change(name);
+        surnameComponent.Change(surname);
+
+        createComponent.Click();
+
+        cut.WaitForAssertion(() => {
+           Assert.Equal(expectedStudent.Id, actualStudent.Id);
+           Assert.Equal(expectedStudent.Surname, actualStudent.Surname);
+           Assert.Equal(expectedStudent.Name, actualStudent.Name);
+        });
+    }
+}
+</Fixture>

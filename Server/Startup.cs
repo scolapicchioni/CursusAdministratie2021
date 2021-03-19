@@ -15,8 +15,7 @@ using CursusAdministratie2021.Server.Core.Interfaces;
 using CursusAdministratie2021.Server.Core.Services;
 using CursusAdministratie2021.Shared.CalendarHelpers;
 
-namespace CursusAdministratie2021.Server
-{
+namespace CursusAdministratie2021.Server {
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -38,6 +37,16 @@ namespace CursusAdministratie2021.Server
 
             services.AddScoped<ICoursesImporterRepository, CoursesImporterRepositoryEF>();
             services.AddScoped<ICoursesImporterService, CoursesImporterService>();
+
+            services.AddScoped<IStudentsRepository, StudentsRepositoryEF>();
+            services.AddScoped<IStudentsService, StudentsService>();
+
+            services.AddScoped<IEnrollmentService, EnrollmentService>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentRepositoryEF>();
+
+            services.AddScoped<IEditionsRepository, EditionsRepositoryEF>();
+            services.AddScoped<IEditionsService, EditionsService>();
+
 
             services.AddScoped<ICalendarHelper, CalendarHelper>();
 

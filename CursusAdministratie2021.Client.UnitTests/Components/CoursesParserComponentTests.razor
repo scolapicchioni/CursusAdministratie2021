@@ -1,4 +1,5 @@
 ﻿@using CursusAdministratie2021.Client.Core.CourseParsers
+@using CursusAdministratie2021.Shared.CalendarHelpers
 @using Microsoft.Extensions.Options
 @using Moq
 @using System.IO
@@ -7,9 +8,13 @@
 
 @code {
     Mock<ICourseParser> courseParserMock;
+    Mock<ICalendarHelper> calendarHelperMock;
     void Start(Fixture fixture) {
         courseParserMock = new ();
         fixture.Services.AddSingleton<ICourseParser>(courseParserMock.Object);
+
+        calendarHelperMock = new ();
+        fixture.Services.AddSingleton<ICalendarHelper>(calendarHelperMock.Object);
 
         var optionsMock = new Mock<IOptions<RemoteBrowserFileStreamOptions>>();
         fixture.Services.AddSingleton<IOptions<RemoteBrowserFileStreamOptions>>(optionsMock.Object);

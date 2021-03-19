@@ -1,32 +1,18 @@
 ﻿using CursusAdministratie2021.Server.Infrastructure.Data;
 using CursusAdministratie2021.Server.Infrastructure.Repositories;
 using CursusAdministratie2021.Shared.Models;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CursusAdministratie2021.Server.Infrastructure.UnitTests.Repositories {
-    public class CoursesImporterRepositoryEFTests : IDisposable {
-        private readonly DbConnection _connection;
+    public class CoursesImporterRepositoryEFTests : RepositoryEFBase {
+        
         public CoursesImporterRepositoryEFTests() {
-            ContextOptions = new DbContextOptionsBuilder<CoursesAdministrationDbContext>()
-                    .UseSqlite(CreateInMemoryDatabase())
-                    .Options;
-            _connection = RelationalOptionsExtension.Extract(ContextOptions).Connection;
+        
         }
-        private static DbConnection CreateInMemoryDatabase() {
-            var connection = new SqliteConnection("Filename=:memory:");
-            connection.Open();
-            return connection;
-        }
-        protected DbContextOptions<CoursesAdministrationDbContext> ContextOptions { get; }
-        public void Dispose() => _connection.Dispose();
-
+        
         [Fact]
         public async Task GetCourseWithEdition_ShouldReturnExistingCourse() {
             Course pc1 = new Course() {

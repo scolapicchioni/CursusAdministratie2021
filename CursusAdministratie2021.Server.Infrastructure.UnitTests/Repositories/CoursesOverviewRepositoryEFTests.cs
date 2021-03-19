@@ -3,39 +3,19 @@ using CursusAdministratie2021.Server.Infrastructure.Repositories;
 using CursusAdministratie2021.Shared.CalendarHelpers;
 using CursusAdministratie2021.Shared.DTO;
 using CursusAdministratie2021.Shared.Models;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace CursusAdministratie2021.Server.Infrastructure.UnitTests.Repositories {
-    public class CoursesOverviewRepositoryEFTests : IDisposable {
-        private readonly DbConnection _connection;
+    public class CoursesOverviewRepositoryEFTests : RepositoryEFBase {
         Mock<ICalendarHelper> calendarHelperMock;
         public CoursesOverviewRepositoryEFTests() {
-            ContextOptions = new DbContextOptionsBuilder<CoursesAdministrationDbContext>()
-                    .UseSqlite(CreateInMemoryDatabase())
-                    .Options;
-            _connection = RelationalOptionsExtension.Extract(ContextOptions).Connection;
             calendarHelperMock = new();
-            //Seed();
         }
-        private static DbConnection CreateInMemoryDatabase() {
-            var connection = new SqliteConnection("Filename=:memory:");
-
-            connection.Open();
-
-            return connection;
-        }
-
-        public void Dispose() => _connection.Dispose();
-        protected DbContextOptions<CoursesAdministrationDbContext> ContextOptions { get; }
 
         [Fact]
         public async Task GetCoursesOverview_ShouldReturnCoursesOverview_OrderedByStartDate_AndTitle() {

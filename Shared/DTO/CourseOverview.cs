@@ -9,5 +9,7 @@ namespace CursusAdministratie2021.Shared.DTO {
         public DateTime StartDate { get; set; }
         public int Duration { get; set; }
         public string Title { get; set; }
+        public int EditionId { get; set; }
+        public int EnrollmentsCount { get; set; }
     }
 }

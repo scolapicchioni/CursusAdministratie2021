@@ -18,11 +18,19 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
             this.dbContext = dbContext;
             this.calendarHelper = calendarHelper;
         }
+
+        public async Task<CourseOverview> GetCourseOverviewByEditionId(int editionId) {
+            return await(from c in dbContext.Courses
+                         from e in c.Editions
+                         where e.Id == editionId
+                         select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title, EditionId = e.Id, EnrollmentsCount = e.Students.Count }).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<CourseOverview>> GetCoursesOverview() {
             return await(from c in dbContext.Courses
                          from e in c.Editions
                          orderby e.StartDate, c.Title
-                         select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title }).ToListAsync();
+                         select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title, EditionId = e.Id, EnrollmentsCount = e.Students.Count }).ToListAsync();
         }
 
         public async Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int year, int week) {
@@ -32,7 +40,7 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
                           from e in c.Editions
                           where e.StartDate >= begin && e.StartDate <= end
                           orderby e.StartDate, c.Title
-                          select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title }).ToListAsync();
+                          select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title, EditionId = e.Id, EnrollmentsCount = e.Students.Count }).ToListAsync();
         }
     }
 }

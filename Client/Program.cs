@@ -34,6 +34,13 @@ namespace CursusAdministratie2021.Client
             builder.Services.AddScoped<ICoursesImporterService, CoursesImporterService>();
             builder.Services.AddScoped<ICoursesImporterRepository, CoursesImporterRepositoryRestClient>();
 
+            builder.Services.AddScoped<IStudentsService, StudentsService>();
+            builder.Services.AddScoped<IStudentsRepository, StudentsRepositoryRestClient>();
+
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+            builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepositoryRestClient>();
+
+
             builder.Services.AddScoped<ICalendarHelper, CalendarHelper>();
 
             await builder.Build().RunAsync();

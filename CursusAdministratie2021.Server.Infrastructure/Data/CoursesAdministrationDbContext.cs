@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 //Add-Migration InitialCreate -Project CursusAdministratie2021.Server.Infrastructure -StartupProject CursusAdministratie2021.Server
 //Update-Database -Project CursusAdministratie2021.Server.Infrastructure -StartupProject CursusAdministratie2021.Server
 
+//Add-Migration Student -Project CursusAdministratie2021.Server.Infrastructure -StartupProject CursusAdministratie2021.Server
+
 namespace CursusAdministratie2021.Server.Infrastructure.Data {
     public class CoursesAdministrationDbContext : DbContext {
         public CoursesAdministrationDbContext(DbContextOptions<CoursesAdministrationDbContext> options)
@@ -13,6 +15,13 @@ namespace CursusAdministratie2021.Server.Infrastructure.Data {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Course>(ConfigureCourse);
+            modelBuilder.Entity<Student>(ConfigureStudent);
+
+            modelBuilder
+                .Entity<Student>()
+                .HasMany(s => s.Editions)
+                .WithMany(e => e.Students)
+                .UsingEntity(j => j.ToTable("Enrollments"));
         }
         private void ConfigureCourse(EntityTypeBuilder<Course> builder) {
             builder.Property(p => p.Title)
@@ -21,6 +30,15 @@ namespace CursusAdministratie2021.Server.Infrastructure.Data {
             builder.Property(p => p.Code)
                .IsRequired(true)
                .HasMaxLength(10);
+        }
+
+        private void ConfigureStudent(EntityTypeBuilder<Student> builder) {
+            builder.Property(p => p.Name)
+               .IsRequired(true)
+               .HasMaxLength(200);
+            builder.Property(p => p.Surname)
+               .IsRequired(true)
+               .HasMaxLength(200);
         }
 
         //private void ConfigureEnroll(EntityTypeBuilder<Enroll> builder) {
@@ -93,5 +111,6 @@ namespace CursusAdministratie2021.Server.Infrastructure.Data {
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Edition> Editions { get; set; }
+        public DbSet<Student> Students { get; set; }
     }
 }

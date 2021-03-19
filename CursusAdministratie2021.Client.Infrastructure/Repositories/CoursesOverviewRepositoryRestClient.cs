@@ -15,6 +15,11 @@ namespace CursusAdministratie2021.Client.Infrastructure.Repositories {
         public CoursesOverviewRepositoryRestClient(HttpClient httpClient) {
             this.httpClient = httpClient;
         }
+
+        public async Task<CourseOverview> GetCourseOverviewByEditionId(int editionId) {
+            return await httpClient.GetFromJsonAsync<CourseOverview>($"/api/coursesoverview/edition/{editionId}");
+        }
+
         public async Task<IEnumerable<CourseOverview>> GetCoursesOverview() {
             return await httpClient.GetFromJsonAsync<List<CourseOverview>>($"/api/coursesoverview");
         }

@@ -1,0 +1,24 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@inject IStudentsService studentsService
+
+<section>
+    <label>Naam</label>
+    <input type="text" id="Name" @bind-value="Name" />
+    <label>Achternaam</label>
+    <input type="text" id="Surname" @bind-value="Surname" />
+    <button id="Create" @onclick="Create">Toevoegen</button>
+</section>
+
+@code {
+    string Name;
+    string Surname;
+
+    [Parameter]
+    public EventCallback<Student> StudentCreated { get; set; }
+
+    async Task Create() {
+        Student createdStudent = await studentsService.CreateStudent(new Student() { Name = Name, Surname = Surname });
+        if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(createdStudent);
+    }
+}

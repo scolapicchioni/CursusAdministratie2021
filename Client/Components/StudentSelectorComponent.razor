@@ -1,0 +1,31 @@
+﻿@using CursusAdministratie2021.Shared.Models
+
+<table>
+    <thead>
+        <tr>
+                <th>Naam</th>
+                <th>Achternaam</th>
+        </tr>
+    </thead>
+    <tbody>
+@if (Students is not null) {
+    @foreach (Student student in Students) {
+        <tr class="student" @onclick="@(()=>SelectStudent(student))">
+            <td>@student.Name</td>
+            <td>@student.Surname</td>
+        </tr>
+    }
+}
+   </tbody>
+</table>
+@code {
+    [Parameter]
+    public List<Student> Students { get; set; }
+    
+    [Parameter]
+    public EventCallback<Student> StudentSelected { get; set; }
+
+    async Task SelectStudent(Student student) {
+        if (StudentSelected.HasDelegate) await StudentSelected.InvokeAsync(student);
+    }
+}

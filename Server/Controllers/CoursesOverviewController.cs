@@ -21,9 +21,14 @@ namespace CursusAdministratie2021.Server.Controllers {
             return await coursesOverviewService.GetCoursesOverview();
         }
 
-        [Route("{yearNumber:int}/{weekNumber:int}")]
+        [HttpGet("{yearNumber:int}/{weekNumber:int}")]
         public async Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int yearNumber, int weekNumber) {
             return await coursesOverviewService.GetCoursesPerWeek(yearNumber,weekNumber);
+        }
+
+        [HttpGet("edition/{editionId:int}")]
+        public async Task<CourseOverview> GetCourseByEditionId(int editionId) {
+            return await coursesOverviewService.GetCourseOverviewByEditionId(editionId);
         }
     }
 }
