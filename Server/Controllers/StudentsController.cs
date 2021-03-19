@@ -22,6 +22,11 @@ namespace CursusAdministratie2021.Server.Controllers {
             return studentsService.FindStudentsBy(name, surname);
         }
 
+        [HttpGet("by-editionid/{editionId:int}")]
+        public Task<List<Student>> GetStudentsByEditionId(int editionId) {
+            return studentsService.GetStudentsByEditionId(editionId);
+        }
+
         [HttpPost()]
         public Task<Student> AddStudent(Student student) {
             return studentsService.CreateStudent(student);

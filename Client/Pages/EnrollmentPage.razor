@@ -7,12 +7,7 @@
 @page "/enroll-to-edition/{EditionId:int}"
 
 @if (courseOverview is not null) {
-    <section>
-        <h2>Titel: @courseOverview.Title</h2>
-        <h3>Startdatum: @courseOverview.StartDate.ToString("dd/MM/yyyy")</h3>
-        <h3>Duur: @courseOverview.Duration</h3>
-        <h3>Huidige Inschrijvingen: @courseOverview.EnrollmentsCount</h3>
-    </section>
+<CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
 
 <EditForm Model="@option">
     <InputRadioGroup @bind-Value="option">

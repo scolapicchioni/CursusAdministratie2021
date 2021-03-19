@@ -1,0 +1,32 @@
+﻿@inject ICoursesOverviewService coursesOverviewService
+@inject IStudentsService studentsService
+@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.DTO
+@using CursusAdministratie2021.Shared.Interfaces
+@using CursusAdministratie2021.Shared.Models
+
+@page "/students-list/{EditionId:int}"
+@if (courseOverview is not null) {
+    <CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
+}
+@if(Students is not null){
+    <StudentSelectorComponent Students="Students" StudentSelected="@(()=>{})"></StudentSelectorComponent>
+}
+<p>@message</p>
+@code {
+    [Parameter]
+    public int EditionId { get; set; }
+
+    CourseOverview courseOverview;
+    List<Student> Students;
+
+    string message;
+    protected override async Task OnInitializedAsync() {
+        try {
+            courseOverview = await coursesOverviewService.GetCourseOverviewByEditionId(EditionId);
+            Students = await studentsService.GetStudentsByEditionId(EditionId);
+        } catch (Exception) {
+            message = "Cursusinstantie niet gevonden.";
+        }
+    }
+}

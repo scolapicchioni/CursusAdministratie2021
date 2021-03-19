@@ -19,5 +19,7 @@ namespace CursusAdministratie2021.Server.Core.Services {
         public async Task<List<Student>> FindStudentsBy(string name, string surname) => await studentsRepository.FindStudentsBy(name, surname);
 
         public Task<Student> GetStudent(int id) => studentsRepository.GetStudent(id);
+
+        public async Task<List<Student>> GetStudentsByEditionId(int editionId) => await studentsRepository.GetStudentsByEditionId(editionId);
     }
 }

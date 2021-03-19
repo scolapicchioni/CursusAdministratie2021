@@ -6,5 +6,6 @@ namespace CursusAdministratie2021.Client.Core.Interfaces {
     public interface IStudentsRepository {
         Task<Student> CreateStudent(Student studentToAdd);
         Task<List<Student>> FindStudentsBy(string name, string surname);
+        Task<List<Student>> GetStudentsByEditionId(int editionId);
     }
 }

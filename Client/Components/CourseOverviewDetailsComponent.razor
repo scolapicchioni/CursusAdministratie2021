@@ -1,0 +1,12 @@
+﻿@using CursusAdministratie2021.Shared.DTO
+    <section>
+        <h2>Titel: @CourseOverview.Title</h2>
+        <h3>Startdatum: @CourseOverview.StartDate.ToString("dd/MM/yyyy")</h3>
+        <h3>Duur: @CourseOverview.Duration</h3>
+        <h3>Huidige Inschrijvingen: @CourseOverview.EnrollmentsCount</h3>
+    </section>
+
+@code {
+    [Parameter]
+    public CourseOverview CourseOverview { get; set; } 
+}

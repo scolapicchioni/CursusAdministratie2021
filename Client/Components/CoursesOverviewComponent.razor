@@ -21,7 +21,7 @@
                     <td>@course.Title</td>
                     <td>@course.EnrollmentsCount</td>
                     <td @onclick="@(()=>{if(course.EnrollmentsCount<12)NavigationManager.NavigateTo($"/enroll-to-edition/{course.EditionId}");})">@if (course.EnrollmentsCount < 12) {<text>➕</text>}</td>
-                    <td @onclick="@(()=>{if(course.EnrollmentsCount<12)NavigationManager.NavigateTo($"/students-list/{course.EditionId}");})">@if (course.EnrollmentsCount > 0) {<text>📄</text>}</td>
+                    <td @onclick="@(()=>{if(course.EnrollmentsCount>0)NavigationManager.NavigateTo($"/students-list/{course.EditionId}");})">@if (course.EnrollmentsCount > 0) {<text>📄</text>}</td>
                 </tr>
             }
         </tbody>

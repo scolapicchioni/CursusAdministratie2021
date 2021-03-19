@@ -28,6 +28,9 @@ namespace CursusAdministratie2021.Client.Infrastructure.Repositories {
         }
 
         public async Task<List<Student>> FindStudentsBy(string name, string surname) =>          
-            await httpClient.GetFromJsonAsync<List<Student>>($"/api/students/find?name={name}&surname={surname}"); 
+            await httpClient.GetFromJsonAsync<List<Student>>($"/api/students/find?name={name}&surname={surname}");
+        
+        public async Task<List<Student>> GetStudentsByEditionId(int editionId) =>
+            await httpClient.GetFromJsonAsync<List<Student>>($"/api/students/by-editionid/{editionId}");
     }
 }

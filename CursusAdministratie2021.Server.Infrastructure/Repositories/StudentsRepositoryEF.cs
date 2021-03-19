@@ -2,6 +2,7 @@
 using CursusAdministratie2021.Server.Infrastructure.Data;
 using CursusAdministratie2021.Shared.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,10 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
 
         public async Task<Student> GetStudent(int id) {
             return await dbContext.Students.FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        public Task<List<Student>> GetStudentsByEditionId(int editionId) {
+            return dbContext.Students.Where(s => s.Editions.Any(e => e.Id == editionId)).ToListAsync();
         }
     }
 }

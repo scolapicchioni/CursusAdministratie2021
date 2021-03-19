@@ -7,6 +7,6 @@ namespace CursusAdministratie2021.Server.Core.Interfaces {
         Task<Student> CreateStudent(Student studentToAdd);
         Task<List<Student>> FindStudentsBy(string name, string surname);
         Task<Student> GetStudent(int studentId);
-
+        Task<List<Student>> GetStudentsByEditionId(int editionId);
     }
 }

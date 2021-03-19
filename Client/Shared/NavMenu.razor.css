@@ -23,3 +23,9 @@
     font-weight: bold;
     color: white;
 }
+
+@media print {
+    .nav {
+        display:none;
+    }
+}
