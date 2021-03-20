@@ -41,7 +41,7 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
         }
 
         public Task<List<Student>> GetStudentsByEditionId(int editionId) {
-            return dbContext.Students.Where(s => s.Editions.Any(e => e.Id == editionId)).ToListAsync();
+            return dbContext.Students.Where(s => s.Editions.Any(e => e.Id == editionId)).OrderBy(s=>s.Surname).ThenBy(s=>s.Name).ToListAsync();
         }
     }
 }
