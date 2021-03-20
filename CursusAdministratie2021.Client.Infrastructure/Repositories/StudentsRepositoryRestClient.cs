@@ -27,6 +27,26 @@ namespace CursusAdministratie2021.Client.Infrastructure.Repositories {
             return await response.Content.ReadFromJsonAsync<Student>();
         }
 
+        public async Task<PrivateCitizen> CreateStudent(PrivateCitizen studentToAdd) {
+            var requestMessage = new HttpRequestMessage() {
+                Method = new HttpMethod("POST"),
+                RequestUri = new Uri(httpClient.BaseAddress, "/api/students/private-citizen"),
+                Content = JsonContent.Create(studentToAdd)
+            };
+
+            var response = await httpClient.SendAsync(requestMessage);
+            return await response.Content.ReadFromJsonAsync<PrivateCitizen>();
+        }
+        public async Task<CompanyEmployee> CreateStudent(CompanyEmployee studentToAdd) {
+            var requestMessage = new HttpRequestMessage() {
+                Method = new HttpMethod("POST"),
+                RequestUri = new Uri(httpClient.BaseAddress, "/api/students/company-employee"),
+                Content = JsonContent.Create(studentToAdd)
+            };
+
+            var response = await httpClient.SendAsync(requestMessage);
+            return await response.Content.ReadFromJsonAsync<CompanyEmployee>();
+        }
         public async Task<List<Student>> FindStudentsBy(string name, string surname) =>          
             await httpClient.GetFromJsonAsync<List<Student>>($"/api/students/find?name={name}&surname={surname}");
         

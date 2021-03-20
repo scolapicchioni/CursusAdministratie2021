@@ -7,6 +7,29 @@
     <input type="text" id="Name" @bind-value="Name" />
     <label>Achternaam</label>
     <input type="text" id="Surname" @bind-value="Surname" />
+
+    <ToggleButtonComponent Option1="@option1" Option2="@option2" Value="@selectedOption" Toggled="OnToggled"></ToggleButtonComponent>
+    <section>
+    @if (selectedOption == option1) {
+        <label>Straatnaam</label>
+        <input type="text" id="StreetName" @bind-value="StreetName" />
+        <label>Huisnummer</label>
+        <input type="text" id="HouseNumber" @bind-value="HouseNumber" />
+        <label>Postcode</label>
+        <input type="text" id="ZipCode" @bind-value="ZipCode" />
+        <label>Woonplaats</label>
+        <input type="text" id="City" @bind-value="City" />
+        <label>IBAN</label>
+        <input type="text" id="IBAN" @bind-value="IBAN" /> 
+    } else {
+        <label>Bedrijfsnaam</label>
+        <input type="text" id="Company" @bind-value="Company" />
+        <label>Afdeling</label>
+        <input type="text" id="Department" @bind-value="Department" />
+        <label>Offertenummer</label>
+        <input type="text" id="Quotation" @bind-value="Quotation" />
+    }
+    </section>
     <button id="Create" @onclick="Create">Toevoegen</button>
 </section>
 
@@ -14,11 +37,43 @@
     string Name;
     string Surname;
 
+    string StreetName;
+    string HouseNumber;
+    string ZipCode;
+    string City;
+    string IBAN;
+
+    string Company;
+    string Department;
+    string Quotation;
+
     [Parameter]
     public EventCallback<Student> StudentCreated { get; set; }
 
+    Student student;
+    string option1 = "Particulier";
+    string option2 = "Bedrijfmedewerker";
+
+    string selectedOption = "Particulier";
+
     async Task Create() {
-        Student createdStudent = await studentsService.CreateStudent(new Student() { Name = Name, Surname = Surname });
-        if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(createdStudent);
+        if (selectedOption == option1) {
+            student = await studentsService.CreateStudent(new PrivateCitizen() { Name=Name, Surname = Surname, StreetName = StreetName, HouseNumber = HouseNumber, ZipCode = ZipCode, City = City, IBAN = IBAN });
+        } else {
+            student = await studentsService.CreateStudent(new CompanyEmployee() { Name=Name, Surname = Surname, Company = Company, Department = Department, Quotation = Quotation });
+        }
+        if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(student);
+
+        //Student createdStudent = await studentsService.CreateStudent(new Student() { Name = Name, Surname = Surname });
+        //if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(createdStudent);
+    }
+
+    void OnToggled(string value) {
+        if (value == option1) {
+            student = new PrivateCitizen() { Name=Name, Surname = Surname, StreetName = StreetName, HouseNumber = HouseNumber, ZipCode = ZipCode, City = City, IBAN = IBAN };
+        } else {
+            student = new CompanyEmployee() { Name=Name, Surname = Surname, Company = Company, Department = Department, Quotation = Quotation };
+        }
+        selectedOption = value;
     }
 }

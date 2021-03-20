@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 //Add-Migration Student -Project CursusAdministratie2021.Server.Infrastructure -StartupProject CursusAdministratie2021.Server
 
+//Add-Migration StudentHierarchy -Project CursusAdministratie2021.Server.Infrastructure -StartupProject CursusAdministratie2021.Server
+
 namespace CursusAdministratie2021.Server.Infrastructure.Data {
     public class CoursesAdministrationDbContext : DbContext {
         public CoursesAdministrationDbContext(DbContextOptions<CoursesAdministrationDbContext> options)
@@ -16,6 +18,8 @@ namespace CursusAdministratie2021.Server.Infrastructure.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Course>(ConfigureCourse);
             modelBuilder.Entity<Student>(ConfigureStudent);
+            modelBuilder.Entity<CompanyEmployee>(ConfigureCompanyEmployee);
+            modelBuilder.Entity<PrivateCitizen>(ConfigurePrivateCitizen);
 
             modelBuilder
                 .Entity<Student>()
@@ -41,76 +45,33 @@ namespace CursusAdministratie2021.Server.Infrastructure.Data {
                .HasMaxLength(200);
         }
 
-        //private void ConfigureEnroll(EntityTypeBuilder<Enroll> builder) {
-        //    builder.ToTable("Enrolls");
+        private void ConfigureCompanyEmployee(EntityTypeBuilder<CompanyEmployee> builder) {
+            builder.Property(p => p.Company)
+                .IsRequired(true)
+               .HasMaxLength(200);
+            builder.Property(p => p.Department)
+               .HasMaxLength(200);
+            builder.Property(p => p.Quotation)
+               .HasMaxLength(30);
+        }
 
-        //    builder
-        //        .HasKey(e => new { e.EditionId, e.StudentId });
-
-        //    builder
-        //        .HasOne(e => e.Student)
-        //        .WithMany(s => s.Enrolls)
-        //        .HasForeignKey(e => e.StudentId);
-
-        //    builder
-        //        .HasOne(e => e.Edition)
-        //        .WithMany(ed => ed.Enrolls)
-        //        .HasForeignKey(e => e.EditionId);
-        //}
-        //private void ConfigureCourse(EntityTypeBuilder<Course> builder) {
-        //    builder.ToTable("Courses");
-
-        //    builder.Property(p => p.Id)
-        //        .UseHiLo("photos_hilo")
-        //        .IsRequired();
-
-        //    builder.Property(p => p.Title)
-        //        .IsRequired(true)
-        //        .HasMaxLength(255);
-
-        //    builder.Ignore(p => p.ImageUrl);
-
-        //    builder.HasOne(p => p.PhotoImage)
-        //        .WithOne()
-        //        .HasForeignKey<PhotoImage>(p => p.Id);
-        //}
-        //private void ConfigureEdition(EntityTypeBuilder<Edition> builder) {
-        //    builder.ToTable("Editions");
-
-        //    builder.Property(p => p.Id)
-        //        .UseHiLo("photos_hilo")
-        //        .IsRequired();
-
-        //    builder.Property(p => p.PhotoFile)
-        //        .IsRequired(true);
-
-        //    builder.Property(p => p.ImageMimeType)
-        //        .IsRequired(true)
-        //        .HasMaxLength(255);
-        //}
-
-        //private void ConfigureComment(EntityTypeBuilder<Comment> builder) {
-        //    builder.ToTable("Comments");
-
-        //    builder.HasKey(c => c.Id);
-
-        //    builder.Property(c => c.Id)
-        //        .UseHiLo("comments_hilo")
-        //       .IsRequired();
-
-        //    builder.Property(c => c.Subject)
-        //        .IsRequired()
-        //        .HasMaxLength(250);
-
-        //    builder.HasOne(c => c.Photo)
-        //        .WithMany(p => p.Comments)
-        //        .HasForeignKey(c => c.PhotoId);
-
-        //    builder.Property(c => c.PhotoId).IsRequired();
-        //}
+        private void ConfigurePrivateCitizen(EntityTypeBuilder<PrivateCitizen> builder) {
+            builder.Property(p => p.StreetName)
+               .HasMaxLength(200);
+            builder.Property(p => p.HouseNumber)
+               .HasMaxLength(6);
+            builder.Property(p => p.ZipCode)
+               .HasMaxLength(30);
+            builder.Property(p => p.City)
+               .HasMaxLength(100);
+            builder.Property(p => p.IBAN)
+               .HasMaxLength(40);
+        }
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Edition> Editions { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<CompanyEmployee> CompanyEmployees { get; set; }
+        public DbSet<PrivateCitizen> PrivateCitizens { get; set; }
     }
 }

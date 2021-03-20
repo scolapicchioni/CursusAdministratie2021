@@ -9,14 +9,9 @@
 @if (courseOverview is not null) {
 <CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
 
-<EditForm Model="@option">
-    <InputRadioGroup @bind-Value="option">
-        <InputRadio Value="StudentOptions.Search" /><label>Opzoeken</label><br />
-        <InputRadio Value="StudentOptions.Add" /><label>Nieuw</label><br />
-    </InputRadioGroup>
-</EditForm>
+<ToggleButtonComponent Option1="Opzoeken" Option2="Nieuw" Value="@option" Toggled="OnToggleButtonToggled"></ToggleButtonComponent>
 
-@if (option == StudentOptions.Search) {
+@if (option == "Opzoeken") {
     <StudentsSearchComponent StudentsFound="@(ss=>Students=ss)"></StudentsSearchComponent>
     <StudentSelectorComponent Students="Students" StudentSelected="@(s=>Student=s)"></StudentSelectorComponent>
 }else{
@@ -35,7 +30,7 @@
 
 @code {
     string message;
-    StudentOptions option = StudentOptions.Search;
+    string option = "Opzoeken";
 
     [Parameter]
     public int EditionId { get; set; }
@@ -53,6 +48,11 @@
         }
     }
 
+    void OnToggleButtonToggled(string value) {
+        option = value;
+
+    }
+
     async Task Enroll() {
         message = "";
         try {
@@ -63,5 +63,4 @@
             message = ex.Message;            
         }
     }
-    enum StudentOptions { Search, Add }
 }

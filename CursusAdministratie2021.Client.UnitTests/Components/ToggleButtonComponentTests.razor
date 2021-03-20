@@ -1,0 +1,75 @@
+﻿@inherits TestComponentBase
+<SnapshotTest Description="Should Render Two buttons with set captions">
+  <TestInput>
+    <ToggleButtonComponent Option1="Yes" Option2="No" Value="Yes"></ToggleButtonComponent>
+  </TestInput>
+  <ExpectedOutput>
+    <section>
+        <button class="selected">Yes</button>
+        <button class="not-selected">No</button>
+    </section>
+  </ExpectedOutput>
+</SnapshotTest>
+
+<SnapshotTest Description="Should Render Two buttons with set captions">
+  <TestInput>
+    <ToggleButtonComponent Option1="One" Option2="Two" Value="Two"></ToggleButtonComponent>
+  </TestInput>
+  <ExpectedOutput>
+    <section>
+        <button class="not-selected">One</button>
+        <button class="selected">Two</button>
+    </section>
+  </ExpectedOutput>
+</SnapshotTest>
+
+
+<Fixture Setup="@Setup_Should_RaiseToggled"
+         Test="@Should_RaiseToggled"
+         Description="Should Invoke OnToggled" >
+<ComponentUnderTest>
+    <ToggleButtonComponent Option1="One" Option2="Two" Value="Two" Toggled="OnToggled"></ToggleButtonComponent>
+  </ComponentUnderTest>
+
+@code {
+        string toggledValue;
+    bool toggleInvoked;
+    void OnToggled(string value) {
+        toggledValue = value;
+        toggleInvoked = true;
+    }
+    void Setup_Should_RaiseToggled(Fixture fixture) {
+        toggleInvoked = false;
+    }
+    void Should_RaiseToggled(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<ToggleButtonComponent>();
+        var firstButton = cut.FindAll("button")[0];
+        firstButton.Click();
+        cut.WaitForAssertion(() => Assert.Equal("One", toggledValue));
+    }
+}
+</Fixture>
+
+<Fixture Setup="@Setup_Should_NotRaiseToggled"
+         Test="@Should_NotRaiseToggled"
+         Description="Should Invoke OnToggled" >
+<ComponentUnderTest>
+    <ToggleButtonComponent Option1="One" Option2="Two" Value="One" Toggled="OnToggled"></ToggleButtonComponent>
+  </ComponentUnderTest>
+
+@code {
+    void Setup_Should_NotRaiseToggled(Fixture fixture) {
+        toggleInvoked = false;
+    }
+    void Should_NotRaiseToggled(Fixture fixture) {
+        var cut = fixture.GetComponentUnderTest<ToggleButtonComponent>();
+        var firstButton = cut.FindAll("button")[0];
+        firstButton.Click();
+        cut.WaitForAssertion(() => Assert.False(toggleInvoked));
+    }
+}
+</Fixture>
+
+@code {
+
+}

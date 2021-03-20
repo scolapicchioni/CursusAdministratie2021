@@ -21,6 +21,16 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
             await dbContext.SaveChangesAsync();
             return studentToAdd;
         }
+        public async Task<PrivateCitizen> CreateStudent(PrivateCitizen studentToAdd) {
+            dbContext.PrivateCitizens.Add(studentToAdd);
+            await dbContext.SaveChangesAsync();
+            return studentToAdd;
+        }
+        public async Task<CompanyEmployee> CreateStudent(CompanyEmployee studentToAdd) {
+            dbContext.CompanyEmployees.Add(studentToAdd);
+            await dbContext.SaveChangesAsync();
+            return studentToAdd;
+        }
 
         public async Task<List<Student>> FindStudentsBy(string name="", string surname="") {
             name = name?.Trim().ToLower() ?? "";

@@ -31,5 +31,13 @@ namespace CursusAdministratie2021.Server.Controllers {
         public Task<Student> AddStudent(Student student) {
             return studentsService.CreateStudent(student);
         }
+        [HttpPost("private-citizen")]
+        public Task<PrivateCitizen> AddStudent(PrivateCitizen student) {
+            return studentsService.CreateStudent(student);
+        }
+        [HttpPost("company-employee")]
+        public Task<CompanyEmployee> AddStudent(CompanyEmployee student) {
+            return studentsService.CreateStudent(student);
+        }
     }
 }

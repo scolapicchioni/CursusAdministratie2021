@@ -15,6 +15,8 @@ namespace CursusAdministratie2021.Server.Core.Services {
         }
 
         public async Task<Student> CreateStudent(Student studentToAdd) => await studentsRepository.CreateStudent(studentToAdd);
+        public async Task<PrivateCitizen> CreateStudent(PrivateCitizen studentToAdd) => await studentsRepository.CreateStudent(studentToAdd);
+        public async Task<CompanyEmployee> CreateStudent(CompanyEmployee studentToAdd) => await studentsRepository.CreateStudent(studentToAdd);
 
         public async Task<List<Student>> FindStudentsBy(string name, string surname) => await studentsRepository.FindStudentsBy(name, surname);
 

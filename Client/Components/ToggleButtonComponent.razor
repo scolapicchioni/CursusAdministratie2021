@@ -1,0 +1,24 @@
+﻿<section>
+    <button class="@(Option1 == Value ? "selected" : "not-selected")" @onclick="()=>ButtonClick(Option1)">@Option1</button>
+    <button class="@(Option2 == Value ? "selected" : "not-selected")" @onclick="()=>ButtonClick(Option2)">@Option2</button>
+</section>
+
+@code {
+    [Parameter]
+    public string Option1 { get; set; }
+    [Parameter]
+    public string Option2 { get; set; }
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public EventCallback<string> Toggled { get; set; }
+
+    async Task ButtonClick(string option) {
+        if (option != Value) {
+            //Value = option;
+            if (Toggled.HasDelegate)
+                await Toggled.InvokeAsync(option);
+        }
+
+    }
+}

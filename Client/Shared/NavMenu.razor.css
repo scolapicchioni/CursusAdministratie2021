@@ -22,8 +22,13 @@
     font-size: 1.6rem;
     font-weight: bold;
     color: white;
+    transition: all 1s;
 }
 
+::deep .active {
+    background-color: var(--primary-bg-color--hover);
+    text-shadow: 1px 1px 5px rgba(255,255,255,0.5);
+}
 @media print {
     .nav {
         display:none;
