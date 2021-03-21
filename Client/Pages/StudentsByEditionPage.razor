@@ -11,7 +11,7 @@
     <CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
 }
 @if(Students is not null){
-    <StudentSelectorComponent Students="Students" StudentSelected="@(()=>{})"></StudentSelectorComponent>
+    <StudentSelectorComponent Students="Students"></StudentSelectorComponent>
 }
 <p>@message</p>
 @code {
@@ -20,7 +20,7 @@
 
     CourseOverview courseOverview;
     List<Student> Students;
-
+    
     string message;
     protected override async Task OnInitializedAsync() {
         try {

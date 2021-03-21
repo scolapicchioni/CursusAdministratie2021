@@ -1,0 +1,77 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.DTO
+@using CursusAdministratie2021.Shared.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@inject ICoursesOverviewService coursesOverviewService
+@page "/student-details"
+
+@if (searching) {
+<h1>Cursist Opzoeken</h1>
+<StudentsSearchComponent CompanyEmployeesFound="@(ces=>{CompanyEmployees=ces; GetCourses(null);})" PrivateCitizensFound="@(pcs=>{PrivateCitizens=pcs; GetCourses(null);})"></StudentsSearchComponent>
+<CompanyEmployeeSelectorComponent CompanyEmployees="CompanyEmployees" CompanyEmployeeSelected="GetCourses"></CompanyEmployeeSelectorComponent>
+<PrivateCitizenSelectorComponent PrivateCitizens="PrivateCitizens" PrivateCitizenSelected="GetCourses"></PrivateCitizenSelectorComponent>
+}
+@if (!searching && SelectedStudent is not null ) {
+    <h2>Cursist</h2>
+    <section>
+        <label>Naam</label>
+        <span>@SelectedStudent.Name</span>
+        <label>Achternaam</label>
+        <span>@SelectedStudent.Surname</span>
+    @if (SelectedStudent is CompanyEmployee companyEmployee) {
+        <label>Bedrijfsnaam</label>
+        <span>@companyEmployee.Company</span>
+        <label>Afdeling</label>
+        <span>@companyEmployee.Department</span>
+        <label>Offertenummer</label>
+        <span>@companyEmployee.Quotation</span>
+    } else if(SelectedStudent is PrivateCitizen privateCitizen){
+        <label>Straatnaam</label>
+        <span>@privateCitizen.StreetName</span>
+        <label>Huisnummer</label>
+        <span>@privateCitizen.HouseNumber</span>
+        <label>Postcode</label>
+        <span>@privateCitizen.ZipCode</span>
+        <label>Woonplaats</label>
+        <span>@privateCitizen.City</span>
+        <label>IBAN</label>
+        <span>@privateCitizen.IBAN</span>
+    }
+    </section>
+    @if (Courses is not null) {
+        <h2>Cursussen</h2>
+        <CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
+    }
+    <button @onclick="@(async ()=>await GetCourses(null))">Terug</button>
+}
+
+
+
+<p>@message</p>
+
+@code {
+    bool searching = true;
+    string message;
+
+    List<CompanyEmployee> CompanyEmployees;
+    List<PrivateCitizen> PrivateCitizens;
+    Student SelectedStudent;
+
+    IEnumerable<CourseOverview> Courses;
+
+    async Task GetCourses(Student s) {
+        SelectedStudent = s;
+        message = "";
+        try {
+            if (SelectedStudent is null) {
+                Courses = null;
+                searching = true;
+            } else {
+                Courses = await coursesOverviewService.GetCoursesOverviewByStudentId(SelectedStudent.Id);
+                searching = false;
+            }
+        } catch (Exception ex) {
+            message = ex.Message;            
+        }
+    }
+}

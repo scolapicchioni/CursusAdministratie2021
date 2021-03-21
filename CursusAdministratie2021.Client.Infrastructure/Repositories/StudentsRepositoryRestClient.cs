@@ -49,7 +49,11 @@ namespace CursusAdministratie2021.Client.Infrastructure.Repositories {
         }
         public async Task<List<Student>> FindStudentsBy(string name, string surname) =>          
             await httpClient.GetFromJsonAsync<List<Student>>($"/api/students/find?name={name}&surname={surname}");
-        
+        public async Task<List<CompanyEmployee>> FindCompanyEmployeesBy(string name, string surname, string companyName) =>
+            await httpClient.GetFromJsonAsync<List<CompanyEmployee>>($"/api/students/find-company-employees?name={name}&surname={surname}&companyname={companyName}");
+        public async Task<List<PrivateCitizen>> FindPrivateCitizensBy(string name, string surname) =>
+            await httpClient.GetFromJsonAsync<List<PrivateCitizen>>($"/api/students/find-private-citizens?name={name}&surname={surname}");
+
         public async Task<List<Student>> GetStudentsByEditionId(int editionId) =>
             await httpClient.GetFromJsonAsync<List<Student>>($"/api/students/by-editionid/{editionId}");
     }

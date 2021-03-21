@@ -8,5 +8,6 @@ namespace CursusAdministratie2021.Shared.Interfaces {
         Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int yearNumber, int weekNumber);
 
         Task<CourseOverview> GetCourseOverviewByEditionId(int editionId);
+        Task<IEnumerable<CourseOverview>> GetCoursesOverviewByStudentId(int studentId);
     }
 }

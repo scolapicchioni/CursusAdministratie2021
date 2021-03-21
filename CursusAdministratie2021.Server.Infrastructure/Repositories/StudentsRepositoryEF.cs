@@ -37,13 +37,37 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
             surname = surname?.Trim().ToLower() ?? "";
             bool namePresent = name.Length > 0;
             bool surnamePresent = surname.Length > 0;
-            var query = (namePresent, surnamePresent) switch {
-                (false, false) => dbContext.Students,
-                (false, true) => dbContext.Students.Where(s => s.Surname.ToLower().Contains(surname)),
-                (true, false) => dbContext.Students.Where(s => s.Name.ToLower().Contains(name)),
-                (true, true) => dbContext.Students.Where(s => s.Name.ToLower().Contains(name) && s.Surname.ToLower().Contains(surname))
-            };
+            IQueryable<Student> query = dbContext.Students;
+            if (namePresent) query = query.Where(s => s.Name.ToLower().Contains(name));
+            if (surnamePresent) query = query.Where(s => s.Surname.ToLower().Contains(surname));
             return await query.OrderBy(s=>s.Surname).ThenBy(s=>s.Name).ToListAsync();
+        }
+
+        public async Task<List<CompanyEmployee>> FindCompanyEmployeesBy(string name = "", string surname = "", string companyName = "") {
+            name = name?.Trim().ToLower() ?? "";
+            surname = surname?.Trim().ToLower() ?? "";
+            companyName = companyName?.Trim().ToLower() ?? "";
+            bool namePresent = name.Length > 0;
+            bool surnamePresent = surname.Length > 0;
+            bool companyNamePresent = companyName.Length > 0;
+
+            IQueryable<CompanyEmployee> query = dbContext.CompanyEmployees;
+            if (namePresent) query = query.Where(s => s.Name.ToLower().Contains(name));
+            if (surnamePresent) query = query.Where(s => s.Surname.ToLower().Contains(surname));
+            if (companyNamePresent) query = query.Where(s => s.Company.ToLower().Contains(companyName));
+
+            return await query.OrderBy(s => s.Surname).ThenBy(s => s.Name).ToListAsync();
+        }
+
+        public async Task<List<PrivateCitizen>> FindPrivateCitizensBy(string name = "", string surname = "") {
+            name = name?.Trim().ToLower() ?? "";
+            surname = surname?.Trim().ToLower() ?? "";
+            bool namePresent = name.Length > 0;
+            bool surnamePresent = surname.Length > 0;
+            IQueryable<PrivateCitizen> query = dbContext.PrivateCitizens;
+            if (namePresent) query = query.Where(s => s.Name.ToLower().Contains(name));
+            if (surnamePresent) query = query.Where(s => s.Surname.ToLower().Contains(surname));
+            return await query.OrderBy(s => s.Surname).ThenBy(s => s.Name).ToListAsync();
         }
 
         public async Task<Student> GetStudent(int id) {

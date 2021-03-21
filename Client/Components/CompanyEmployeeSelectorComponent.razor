@@ -1,0 +1,40 @@
+﻿@using CursusAdministratie2021.Shared.Models
+
+@if (CompanyEmployees is not null) {
+<h2>Bedrijfsmedewerkers</h2>
+<table>
+    <thead>
+        <tr>
+                <th>Naam</th>
+                <th>Achternaam</th>
+                <th>Bedrijfsnaam</th>
+                <th>Afdeling</th>
+                <th>Offertenummer</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    @foreach (CompanyEmployee student in CompanyEmployees) {
+        <tr class="student" @onclick="@(()=>SelectCompanyEmployee(student))">
+            <td>@student.Name</td>
+            <td>@student.Surname</td>
+            <td>@student.Company</td>
+            <td>@student.Department</td>
+            <td>@student.Quotation</td>
+        </tr>
+    }
+    </tbody>
+</table>
+}
+   
+@code {
+    [Parameter]
+    public List<CompanyEmployee> CompanyEmployees { get; set; }
+    
+    [Parameter]
+    public EventCallback<CompanyEmployee> CompanyEmployeeSelected { get; set; }
+
+    async Task SelectCompanyEmployee(CompanyEmployee student) {
+        if (CompanyEmployeeSelected.HasDelegate) await CompanyEmployeeSelected.InvokeAsync(student);
+    }
+}

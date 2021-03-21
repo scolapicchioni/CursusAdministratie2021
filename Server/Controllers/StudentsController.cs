@@ -21,6 +21,14 @@ namespace CursusAdministratie2021.Server.Controllers {
         public Task<List<Student>> FindStudentsBy([FromQuery]string name="", [FromQuery]string surname="") {
             return studentsService.FindStudentsBy(name, surname);
         }
+        [HttpGet("find-company-employees")]
+        public Task<List<CompanyEmployee>> FindCompanyEmployeesBy([FromQuery] string name = "", [FromQuery] string surname = "", [FromQuery]string companyName = "") {
+            return studentsService.FindCompanyEmployeesBy(name, surname, companyName);
+        }
+        [HttpGet("find-private-citizens")]
+        public Task<List<PrivateCitizen>> FindPrivateCitizensBy([FromQuery] string name = "", [FromQuery] string surname = "") {
+            return studentsService.FindPrivateCitizensBy(name, surname);
+        }
 
         [HttpGet("by-editionid/{editionId:int}")]
         public Task<List<Student>> GetStudentsByEditionId(int editionId) {

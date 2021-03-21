@@ -14,6 +14,8 @@ namespace CursusAdministratie2021.Shared.Services {
 
         public Task<IEnumerable<CourseOverview>> GetCoursesOverview() => coursesOverviewRepository.GetCoursesOverview();
 
+        public Task<IEnumerable<CourseOverview>> GetCoursesOverviewByStudentId(int studentId) => coursesOverviewRepository.GetCoursesOverviewByStudentId(studentId);
+
         public Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int yearNumber, int weekNumber) => coursesOverviewRepository.GetCoursesPerWeek(yearNumber, weekNumber);
     }
 }

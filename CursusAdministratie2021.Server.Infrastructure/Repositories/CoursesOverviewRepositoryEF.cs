@@ -42,5 +42,12 @@ namespace CursusAdministratie2021.Server.Infrastructure.Repositories {
                           orderby e.StartDate, c.Title
                           select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title, EditionId = e.Id, EnrollmentsCount = e.Students.Count }).ToListAsync();
         }
+        public async Task<IEnumerable<CourseOverview>> GetCoursesOverviewByStudentId(int studentId) {
+            return await (from c in dbContext.Courses
+                          from e in c.Editions
+                          where e.Students.Any(s=>s.Id==studentId)
+                          orderby e.StartDate, c.Title
+                          select new CourseOverview { StartDate = e.StartDate, Duration = c.Duration, Title = c.Title, EditionId = e.Id, EnrollmentsCount = e.Students.Count }).ToListAsync();
+        }
     }
 }

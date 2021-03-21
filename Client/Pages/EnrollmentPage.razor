@@ -16,8 +16,9 @@
 <ToggleButtonComponent Option1="Opzoeken" Option2="Nieuw" Value="@option" Toggled="OnToggleButtonToggled"></ToggleButtonComponent>
 </section>
 @if (option == "Opzoeken") {
-    <StudentsSearchComponent StudentsFound="@(ss=>Students=ss)"></StudentsSearchComponent>
-    <StudentSelectorComponent Students="Students" StudentSelected="@(s=>Student=s)"></StudentSelectorComponent>
+    <StudentsSearchComponent CompanyEmployeesFound="@(ces=>CompanyEmployees=ces)" PrivateCitizensFound="@(pcs=>PrivateCitizens=pcs)"></StudentsSearchComponent>
+    <CompanyEmployeeSelectorComponent CompanyEmployees="CompanyEmployees" CompanyEmployeeSelected="@(s=>Student=s)"></CompanyEmployeeSelectorComponent>
+    <PrivateCitizenSelectorComponent PrivateCitizens="PrivateCitizens" PrivateCitizenSelected="@(s=>Student=s)"></PrivateCitizenSelectorComponent>
 }else{
     <StudentCreatorComponent StudentCreated="@(s=>Student=s)"></StudentCreatorComponent>
 }
@@ -41,7 +42,8 @@
 
     CourseOverview courseOverview;
 
-    List<Student> Students;
+    List<CompanyEmployee> CompanyEmployees;
+    List<PrivateCitizen> PrivateCitizens;
     Student Student;
 
     protected override async Task OnInitializedAsync() {

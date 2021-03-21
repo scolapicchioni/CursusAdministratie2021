@@ -25,6 +25,10 @@ namespace CursusAdministratie2021.Server.Controllers {
         public async Task<IEnumerable<CourseOverview>> GetCoursesPerWeek(int yearNumber, int weekNumber) {
             return await coursesOverviewService.GetCoursesPerWeek(yearNumber,weekNumber);
         }
+        [HttpGet("student/{studentId:int}")]
+        public async Task<IEnumerable<CourseOverview>> GetCoursesOverviewByStudentId(int studentId) {
+            return await coursesOverviewService.GetCoursesOverviewByStudentId(studentId);
+        }
 
         [HttpGet("edition/{editionId:int}")]
         public async Task<CourseOverview> GetCourseByEditionId(int editionId) {

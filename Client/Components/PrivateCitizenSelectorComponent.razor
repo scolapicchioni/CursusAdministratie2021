@@ -1,0 +1,43 @@
+﻿@using CursusAdministratie2021.Shared.Models
+
+@if (PrivateCitizens is not null) {
+<h2>Particulieren</h2>
+<table>
+    <thead>
+        <tr>
+                <th>Naam</th>
+                <th>Achternaam</th>
+                <th>Straatnaam</th>
+                <th>Huisnummer</th>
+                <th>Postcode</th>
+                <th>Woonplaats</th>
+                <th>IBAN</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (PrivateCitizen student in PrivateCitizens) {
+        <tr class="student" @onclick="@(()=>SelectPrivateCitizen(student))">
+            <td>@student.Name</td>
+            <td>@student.Surname</td>
+            <td>@student.StreetName</td>
+            <td>@student.HouseNumber</td>
+            <td>@student.ZipCode</td>
+            <td>@student.City</td>
+            <td>@student.IBAN</td>
+        </tr>
+    }
+    </tbody>
+</table>
+}
+   
+@code {
+    [Parameter]
+    public List<PrivateCitizen> PrivateCitizens { get; set; }
+    
+    [Parameter]
+    public EventCallback<PrivateCitizen> PrivateCitizenSelected { get; set; }
+
+    async Task SelectPrivateCitizen(PrivateCitizen student) {
+        if (PrivateCitizenSelected.HasDelegate) await PrivateCitizenSelected.InvokeAsync(student);
+    }
+}
