@@ -9,7 +9,7 @@
     <input type="text" id="Surname" @bind-value="Surname" />
 
     <ToggleButtonComponent Option1="@option1" Option2="@option2" Value="@selectedOption" Toggled="OnToggled"></ToggleButtonComponent>
-    <section>
+
     @if (selectedOption == option1) {
         <label>Straatnaam</label>
         <input type="text" id="StreetName" @bind-value="StreetName" />
@@ -29,7 +29,7 @@
         <label>Offertenummer</label>
         <input type="text" id="Quotation" @bind-value="Quotation" />
     }
-    </section>
+
     <button id="Create" @onclick="Create">Toevoegen</button>
 </section>
 

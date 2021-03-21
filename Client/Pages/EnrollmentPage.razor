@@ -6,11 +6,15 @@
 @inject IEnrollmentService enrollmentService
 @page "/enroll-to-edition/{EditionId:int}"
 
+<h1>Cursus Inschrijven</h1>
+<h2>Cursus</h2>
 @if (courseOverview is not null) {
 <CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
 
+<h2>Cursist</h2>
+<section>
 <ToggleButtonComponent Option1="Opzoeken" Option2="Nieuw" Value="@option" Toggled="OnToggleButtonToggled"></ToggleButtonComponent>
-
+</section>
 @if (option == "Opzoeken") {
     <StudentsSearchComponent StudentsFound="@(ss=>Students=ss)"></StudentsSearchComponent>
     <StudentSelectorComponent Students="Students" StudentSelected="@(s=>Student=s)"></StudentSelectorComponent>

@@ -1,7 +1,7 @@
-﻿<section>
-    <button class="@(Option1 == Value ? "selected" : "not-selected")" @onclick="()=>ButtonClick(Option1)">@Option1</button>
-    <button class="@(Option2 == Value ? "selected" : "not-selected")" @onclick="()=>ButtonClick(Option2)">@Option2</button>
-</section>
+﻿
+<button class="@(Option1 == Value ? "selected" : "not-selected")" @onclick="()=>ButtonClick(Option1)">@Option1</button>
+<button class="@(Option2 == Value ? "selected" : "not-selected")" @onclick="()=>ButtonClick(Option2)">@Option2</button>
+
 
 @code {
     [Parameter]

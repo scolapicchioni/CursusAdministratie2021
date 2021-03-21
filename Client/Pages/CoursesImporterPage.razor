@@ -3,7 +3,7 @@
 @using CursusAdministratie2021.Shared.DTO
 @using CursusAdministratie2021.Shared.Models
 @inject ICoursesImporterService coursesImporterService
-
+<h1>Cursussen Invoeren</h1>
 <CoursesParserComponent OnCoursesParsed="@SetCourses"></CoursesParserComponent>
 <button @onclick="Upload">Upload</button>
 <p>@message</p>
