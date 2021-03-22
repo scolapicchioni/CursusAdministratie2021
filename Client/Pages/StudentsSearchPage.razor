@@ -13,39 +13,13 @@
 }
 @if (!searching && SelectedStudent is not null ) {
     <h2>Cursist</h2>
-    <section>
-        <label>Naam</label>
-        <span>@SelectedStudent.Name</span>
-        <label>Achternaam</label>
-        <span>@SelectedStudent.Surname</span>
-    @if (SelectedStudent is CompanyEmployee companyEmployee) {
-        <label>Bedrijfsnaam</label>
-        <span>@companyEmployee.Company</span>
-        <label>Afdeling</label>
-        <span>@companyEmployee.Department</span>
-        <label>Offertenummer</label>
-        <span>@companyEmployee.Quotation</span>
-    } else if(SelectedStudent is PrivateCitizen privateCitizen){
-        <label>Straatnaam</label>
-        <span>@privateCitizen.StreetName</span>
-        <label>Huisnummer</label>
-        <span>@privateCitizen.HouseNumber</span>
-        <label>Postcode</label>
-        <span>@privateCitizen.ZipCode</span>
-        <label>Woonplaats</label>
-        <span>@privateCitizen.City</span>
-        <label>IBAN</label>
-        <span>@privateCitizen.IBAN</span>
-    }
-    </section>
+    <StudentDetailsComponent Student="SelectedStudent"></StudentDetailsComponent>
     @if (Courses is not null) {
         <h2>Cursussen</h2>
-        <CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
+        <CoursesOverviewComponent Courses="Courses" ShowAttendeesButton="false" ShowEnrollButton="false"></CoursesOverviewComponent>
     }
     <button @onclick="@(async ()=>await GetCourses(null))">Terug</button>
 }
-
-
 
 <p>@message</p>
 

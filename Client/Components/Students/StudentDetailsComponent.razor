@@ -1,0 +1,45 @@
+﻿@using CursusAdministratie2021.Client.Core.Interfaces
+@using CursusAdministratie2021.Shared.DTO
+@using CursusAdministratie2021.Shared.Interfaces
+@using CursusAdministratie2021.Shared.Models
+@inject ICoursesOverviewService coursesOverviewService
+
+@if (Student is not null ) {
+    <section>
+        <label>Naam</label>
+        <span>@Student.Name</span>
+        <label>Achternaam</label>
+        <span>@Student.Surname</span>
+    @if (Student is CompanyEmployee companyEmployee) {
+        <label>Bedrijfsnaam</label>
+        <span>@companyEmployee.Company</span>
+        <label>Afdeling</label>
+        <span>@companyEmployee.Department</span>
+        <label>Offertenummer</label>
+        <span>@companyEmployee.Quotation</span>
+    } else if(Student is PrivateCitizen privateCitizen){
+        <label>Straatnaam</label>
+        <span>@privateCitizen.StreetName</span>
+        <label>Huisnummer</label>
+        <span>@privateCitizen.HouseNumber</span>
+        <label>Postcode</label>
+        <span>@privateCitizen.ZipCode</span>
+        <label>Woonplaats</label>
+        <span>@privateCitizen.City</span>
+        <label>IBAN</label>
+        <span>@privateCitizen.IBAN</span>
+    }
+    </section>
+    
+}
+
+@code {
+    string message;
+
+    List<CompanyEmployee> CompanyEmployees;
+    List<PrivateCitizen> PrivateCitizens;
+
+    [Parameter]
+    public Student Student { get; set; }
+
+}

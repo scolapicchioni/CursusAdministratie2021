@@ -12,6 +12,7 @@
                 <th>Start</th>
                 <th>Duur</th>
                 <th>Titel</th>
+                <th>Cursisten</th>
             </tr>
         </thead>
         <tbody>
@@ -19,16 +20,19 @@
                 <td>15-03-2021</td>
                 <td>3</td>
                 <td>C#</td>
+                <td>1</td>
             </tr>
             <tr>
                 <td>10-03-2021</td>
                 <td>5</td>
                 <td>JPA</td>
+                <td>12</td>
             </tr>
             <tr>
                 <td>8-03-2021</td>
                 <td>3</td>
                 <td>Azure</td>
+                <td>3</td>
             </tr>
         </tbody>
     </table>
@@ -43,14 +47,60 @@
   </ExpectedOutput>
 </SnapshotTest>
 
+<SnapshotTest Setup="@Setup_WithCourses" Description="Should Render Buttons When ShowButtons is true">
+  <TestInput>
+    <CoursesOverviewComponent Courses="Courses" ShowAttendeesButton="true" ShowEnrollButton="true"></CoursesOverviewComponent>
+  </TestInput>
+  <ExpectedOutput>
+    <table>
+        <thead>
+            <tr>
+                <th>Start</th>
+                <th>Duur</th>
+                <th>Titel</th>
+                <th>Cursisten</th>
+                <th>Inschrijven</th>
+                <th>Presentielijst</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15-03-2021</td>
+                <td>3</td>
+                <td>C#</td>
+                <td>1</td>
+                <td>➕</td>
+                <td>📄</td>
+            </tr>
+            <tr>
+                <td>10-03-2021</td>
+                <td>5</td>
+                <td>JPA</td>
+                <td>12</td>
+                <td></td>
+                <td>📄</td>
+            </tr>
+            <tr>
+                <td>8-03-2021</td>
+                <td>3</td>
+                <td>Azure</td>
+                <td>3</td>
+                <td>➕</td>
+                <td>📄</td>
+            </tr>
+        </tbody>
+    </table>
+  </ExpectedOutput>
+</SnapshotTest>
+
 
 @code {
     List<CourseOverview> Courses;
     void Setup_WithCourses(SnapshotTest test) {
         Courses = new List<CourseOverview> {
-            new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
-            new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
-            new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
+            new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#",EnrollmentsCount=1},
+            new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA",EnrollmentsCount=12},
+            new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure",EnrollmentsCount=3}
         };
     }
     void Setup_WithNullCourses(SnapshotTest test) {

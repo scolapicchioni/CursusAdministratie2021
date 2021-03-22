@@ -7,33 +7,41 @@
 @page "/enroll-to-edition/{EditionId:int}"
 
 <h1>Cursus Inschrijven</h1>
-<h2>Cursus</h2>
+
 @if (courseOverview is not null) {
-<CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
+    <h2>Cursus</h2>
+    <CourseOverviewDetailsComponent CourseOverview="@courseOverview"></CourseOverviewDetailsComponent>
 
-<h2>Cursist</h2>
-<section>
-<ToggleButtonComponent Option1="Opzoeken" Option2="Nieuw" Value="@option" Toggled="OnToggleButtonToggled"></ToggleButtonComponent>
-</section>
-@if (option == "Opzoeken") {
-    <StudentsSearchComponent CompanyEmployeesFound="@(ces=>CompanyEmployees=ces)" PrivateCitizensFound="@(pcs=>PrivateCitizens=pcs)"></StudentsSearchComponent>
-    <CompanyEmployeeSelectorComponent CompanyEmployees="CompanyEmployees" CompanyEmployeeSelected="@(s=>Student=s)"></CompanyEmployeeSelectorComponent>
-    <PrivateCitizenSelectorComponent PrivateCitizens="PrivateCitizens" PrivateCitizenSelected="@(s=>Student=s)"></PrivateCitizenSelectorComponent>
-}else{
-    <StudentCreatorComponent StudentCreated="@(s=>Student=s)"></StudentCreatorComponent>
-}
+    <h2>Cursist</h2>
+    @if (!studentSelected) {
+        <section>
+            <ToggleButtonComponent Option1="Opzoeken" Option2="Nieuw" Value="@option" Toggled="OnToggleButtonToggled"></ToggleButtonComponent>
+        </section>
+        @if (option == "Opzoeken") {
+            <h2>Opzoeken</h2>
+            <StudentsSearchComponent CompanyEmployeesFound="@(ces=>CompanyEmployees=ces)" PrivateCitizensFound="@(pcs=>PrivateCitizens=pcs)"></StudentsSearchComponent>
+            <CompanyEmployeeSelectorComponent CompanyEmployees="CompanyEmployees" CompanyEmployeeSelected="@SelectStudent"></CompanyEmployeeSelectorComponent>
+            <PrivateCitizenSelectorComponent PrivateCitizens="PrivateCitizens" PrivateCitizenSelected="@SelectStudent"></PrivateCitizenSelectorComponent>
+        }else {
+            <h2>Nieuw</h2>
+            <StudentCreatorComponent StudentCreated="@SelectStudent"></StudentCreatorComponent>
+        }
 
-@if(Student is not null && courseOverview is not null) {
-    <button @onclick="Enroll">@Student.Name @Student.Surname inschrijven voor @courseOverview.Title van @courseOverview.StartDate.ToString("dd/MM/yyyy")</button>
-}
-}else {
-    <p>Selecteer een cursusistantie en een cursist</p>
-}
+    }  
+    @if (studentSelected && Student is not null && courseOverview is not null) {
 
+        <StudentDetailsComponent Student="Student"></StudentDetailsComponent>
+        <section>
+            <button @onclick="Enroll">@Student.Name @Student.Surname inschrijven voor @courseOverview.Title van @courseOverview.StartDate.ToString("dd/MM/yyyy")</button>
+            <button @onclick="@(()=>SelectStudent(null))">Terug</button>
+        </section>
+    }
+}
 <p>@message</p>
 
 
 @code {
+    bool studentSelected = false;
     string message;
     string option = "Opzoeken";
 
@@ -56,7 +64,12 @@
 
     void OnToggleButtonToggled(string value) {
         option = value;
+        SelectStudent(null);
+    }
 
+    void SelectStudent(Student student) {
+        Student = student;
+        studentSelected = student is not null;
     }
 
     async Task Enroll() {
@@ -65,6 +78,7 @@
             await enrollmentService.EnrollStudentToEdition(Student.Id, EditionId);
             message = "Student ingeschreven.";
             courseOverview.EnrollmentsCount++;
+            SelectStudent(null);
         } catch (Exception ex) {
             message = ex.Message;            
         }

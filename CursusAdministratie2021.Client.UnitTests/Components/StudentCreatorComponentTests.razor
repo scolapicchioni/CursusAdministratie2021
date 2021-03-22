@@ -9,28 +9,29 @@
         studentsServiceMock = new ();
         fixture.Services.AddSingleton<IStudentsService>(studentsServiceMock.Object);
     }
-}
-
-<Fixture Setup="@Setup_Should_AddStudent"
-         Test="@Should_AddStudent"
-         Description="Should Add Student" >
-<ComponentUnderTest>
-    <StudentCreatorComponent StudentCreated="OnStudentCreated"></StudentCreatorComponent>
-  </ComponentUnderTest>
-
-@code {
     Student actualStudent;
-    void Setup_Should_AddStudent(Fixture fixture) {
+    void Setup_Should_Add(Fixture fixture) {
         Start(fixture);
     }
     void OnStudentCreated(Student student) {
         actualStudent = student;
     }
-    void Should_AddStudent(Fixture fixture) {
+}
+
+<Fixture Setup="@Setup_Should_Add"
+         Test="@Should_AddPrivateCitizen"
+         Description="Should Add Private Citizen" >
+<ComponentUnderTest>
+    <StudentCreatorComponent StudentCreated="OnStudentCreated"></StudentCreatorComponent>
+  </ComponentUnderTest>
+
+@code {
+
+    void Should_AddPrivateCitizen(Fixture fixture) {
         string name = "StudentName";
         string surname = "StudentSurname";
-        Student expectedStudent = new() { Id = 1, Name = name, Surname= surname };
-        studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<Student>())).ReturnsAsync(expectedStudent);
+        PrivateCitizen expectedStudent = new() { Id = 1, Name = name, Surname= surname };
+        studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<PrivateCitizen>())).ReturnsAsync(expectedStudent);
 
         var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
         
@@ -39,6 +40,46 @@
         var createComponent = cut.Find("#Create");
         nameComponent.Change(name);
         surnameComponent.Change(surname);
+
+        createComponent.Click();
+
+        cut.WaitForAssertion(() => {
+           Assert.Equal(expectedStudent.Id, actualStudent.Id);
+           Assert.Equal(expectedStudent.Surname, actualStudent.Surname);
+           Assert.Equal(expectedStudent.Name, actualStudent.Name);
+        });
+    }
+}
+</Fixture>
+
+
+<Fixture Setup="@Setup_Should_Add"
+         Test="@Should_AddCompanyEmployee"
+         Description="Should Add Company Employee" >
+<ComponentUnderTest>
+    <StudentCreatorComponent StudentCreated="OnStudentCreated"></StudentCreatorComponent>
+  </ComponentUnderTest>
+
+@code {
+    //Bedrijfmedewerker
+    void Should_AddCompanyEmployee(Fixture fixture) {
+        string name = "StudentName";
+        string surname = "StudentSurname";
+        CompanyEmployee expectedStudent = new() { Id = 1, Name = name, Surname= surname };
+        studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<CompanyEmployee>())).ReturnsAsync(expectedStudent);
+
+        var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
+        //var togglebutton = cut.FindComponent<ToggleButtonComponent>();
+        //togglebutton.SetParametersAndRender(parameters => parameters
+        //  .Add(p => p.Value, "Bedrijfmedewerker")
+        //);
+        //togglebutton.Instance.InvokeAsync(() => togglebutton.Instance.Toggled(""));
+        var nameComponent = cut.Find("#Name");
+        var surnameComponent = cut.Find("#Surname");
+        var createComponent = cut.Find("#Create");
+        nameComponent.Change(name);
+        surnameComponent.Change(surname);
+
 
         createComponent.Click();
 

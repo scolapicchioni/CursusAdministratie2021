@@ -10,7 +10,7 @@
 @page "/courses-overview/{yearNumber:int}/{weekNumber:int}"
 <h1>Weekoverzicht</h1>
 <YearWeekToolbarComponent @bind-Year="YearNumber" @bind-Week="WeekNumber" YearWeekChanged="GetCourses"></YearWeekToolbarComponent>
-<CoursesOverviewComponent Courses="Courses"></CoursesOverviewComponent>
+<CoursesOverviewComponent Courses="Courses" ShowAttendeesButton="true" ShowEnrollButton="true"></CoursesOverviewComponent>
 
 @code {
     [Parameter]
