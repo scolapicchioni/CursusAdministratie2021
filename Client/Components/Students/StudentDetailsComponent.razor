@@ -5,41 +5,34 @@
 @inject ICoursesOverviewService coursesOverviewService
 
 @if (Student is not null ) {
-    <section>
-        <label>Naam</label>
+    <section class="form">
+        <label class="form__label">Naam</label>
         <span>@Student.Name</span>
-        <label>Achternaam</label>
+        <label class="form__label">Achternaam</label>
         <span>@Student.Surname</span>
     @if (Student is CompanyEmployee companyEmployee) {
-        <label>Bedrijfsnaam</label>
+        <label class="form__label">Bedrijfsnaam</label>
         <span>@companyEmployee.Company</span>
-        <label>Afdeling</label>
+        <label class="form__label">Afdeling</label>
         <span>@companyEmployee.Department</span>
-        <label>Offertenummer</label>
+        <label class="form__label">Offertenummer</label>
         <span>@companyEmployee.Quotation</span>
     } else if(Student is PrivateCitizen privateCitizen){
-        <label>Straatnaam</label>
+        <label class="form__label">Straatnaam</label>
         <span>@privateCitizen.StreetName</span>
-        <label>Huisnummer</label>
+        <label class="form__label">Huisnummer</label>
         <span>@privateCitizen.HouseNumber</span>
-        <label>Postcode</label>
+        <label class="form__label">Postcode</label>
         <span>@privateCitizen.ZipCode</span>
-        <label>Woonplaats</label>
+        <label class="form__label">Woonplaats</label>
         <span>@privateCitizen.City</span>
-        <label>IBAN</label>
+        <label class="form__label">IBAN</label>
         <span>@privateCitizen.IBAN</span>
     }
     </section>
-    
 }
 
 @code {
-    string message;
-
-    List<CompanyEmployee> CompanyEmployees;
-    List<PrivateCitizen> PrivateCitizens;
-
     [Parameter]
     public Student Student { get; set; }
-
 }

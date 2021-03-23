@@ -3,14 +3,12 @@
     background-color: var(--primary-bg-color--hover);
     color: var(--primary-color);
     border-radius: 5px;
-    border: 1px solid rgba(0,0,0,.5);
-    transition: all 1s;
+    border: var(--input-border);
 }
 .not-selected {
     background-color: var(--primary-bg-color--light);
     color: var(--primary-color--light);
     border-radius: 5px;
     box-shadow: var(--box-shadow);
-    border: 1px solid rgba(0,0,0,.5);
-    transition: all 1s;
+    border: var(--input-border);
 }

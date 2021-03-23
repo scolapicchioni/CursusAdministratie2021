@@ -1,9 +1,9 @@
 ﻿@using CursusAdministratie2021.Shared.DTO
-    <section>
-        <label>Titel</label><span>@CourseOverview.Title</span>
-        <label>Startdatum</label><span>@CourseOverview.StartDate.ToString("dd/MM/yyyy")</span>
-        <label>Duur</label><span>@CourseOverview.Duration</span>
-        <label>Huidige Inschrijvingen</label><span>@CourseOverview.EnrollmentsCount</span>
+    <section class="form">
+        <label class="form__label">Titel</label><span>@CourseOverview.Title</span>
+        <label class="form__label">Startdatum</label><span>@CourseOverview.StartDate.ToString("dd/MM/yyyy")</span>
+        <label class="form__label">Duur</label><span>@CourseOverview.Duration</span>
+        <label class="form__label">Huidige Inschrijvingen</label><span>@CourseOverview.EnrollmentsCount</span>
     </section>
 
 @code {

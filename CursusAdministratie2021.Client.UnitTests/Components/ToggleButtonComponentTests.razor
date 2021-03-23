@@ -4,10 +4,8 @@
     <ToggleButtonComponent Option1="Yes" Option2="No" Value="Yes"></ToggleButtonComponent>
   </TestInput>
   <ExpectedOutput>
-    <section>
-        <button class="selected">Yes</button>
-        <button class="not-selected">No</button>
-    </section>
+    <button class="selected">Yes</button>
+    <button class="not-selected">No</button>
   </ExpectedOutput>
 </SnapshotTest>
 
@@ -16,10 +14,8 @@
     <ToggleButtonComponent Option1="One" Option2="Two" Value="Two"></ToggleButtonComponent>
   </TestInput>
   <ExpectedOutput>
-    <section>
-        <button class="not-selected">One</button>
-        <button class="selected">Two</button>
-    </section>
+    <button class="not-selected">One</button>
+    <button class="selected">Two</button>
   </ExpectedOutput>
 </SnapshotTest>
 
@@ -32,7 +28,7 @@
   </ComponentUnderTest>
 
 @code {
-        string toggledValue;
+    string toggledValue;
     bool toggleInvoked;
     void OnToggled(string value) {
         toggledValue = value;

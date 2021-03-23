@@ -7,7 +7,11 @@
     --primary-bg-color--light: #daefff;
     --primary-color--light: black;
     --font-size: 1rem;
-    --box-shadow: 5px 5px 5px rgba(0,0,0,.5);
+    --box-shadow: 2px 2px 5px rgba(0,0,0,.2);
+    --input-border: 1px solid rgba(0,0,0,.2);
+    --focus-shadow: 5px 5px 10px rgba(0,0,0,.2);
+    --focus-border: 1px solid var(--primary-bg-color--hover);
+    --border-radius: 5px;
 }
 
 html, body {
@@ -17,6 +21,9 @@ html, body {
     font-size: 1rem;
     line-height:  1.6rem ;
 }
+    body * {
+        transition:500ms all;
+    }
 label {
     font-weight: bold;
 }
@@ -26,29 +33,34 @@ button {
     padding: 1rem;
     background-color: var(--primary-bg-color);
     color: var(--primary-color);
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    border: 1px solid rgba(0,0,0,.5);
-    transition: all 1s;
+    border: var(--input-border);
 }
     button:hover {
         background-color: var(--primary-bg-color--hover);
         text-shadow: 1px 1px 5px  rgba(255,255,255,0.5);
+        box-shadow:var(--focus-shadow);
     }
-
+:focus{
+    border:var(--focus-border);
+    box-shadow:var(--focus-shadow);
+    border-radius:inherit;
+}
 input {
     font-family: inherit;
     padding: 1rem;
 }
-input[type=number] {
-    border-radius: 5px;
-    box-shadow: var(--box-shadow);
-    border: 1px solid rgba(0,0,0,.5);
-}
+    input:not([type=file]) {
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        border: var(--input-border);
+    }
 
 table {
     width:100%;
     margin: 1rem 0;
+    box-shadow:var(--box-shadow);
 }
 th {
     background-color: var(--primary-bg-color);
@@ -62,6 +74,17 @@ td {
     color: var(--primary-color--light);
     padding: 1rem;
     margin: 1px;
+}
+
+.form {
+    width: max(50vw, 400px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+}
+.form__label {
+    text-align: right;
+    font-weight: bold;
 }
 
 #blazor-error-ui {

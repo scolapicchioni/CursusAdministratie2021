@@ -2,31 +2,31 @@
 @using CursusAdministratie2021.Shared.Models
 @inject IStudentsService studentsService
 
-<section>
-    <label>Naam</label>
+<section class="form">
+    <label class="form__label">Naam</label>
     <input type="text" id="Name" @bind-value="Name" />
-    <label>Achternaam</label>
+    <label class="form__label">Achternaam</label>
     <input type="text" id="Surname" @bind-value="Surname" />
 
     <ToggleButtonComponent Option1="@option1" Option2="@option2" Value="@selectedOption" Toggled="OnToggled"></ToggleButtonComponent>
 
     @if (selectedOption == option1) {
-        <label>Straatnaam</label>
+        <label class="form__label">Straatnaam</label>
         <input type="text" id="StreetName" @bind-value="StreetName" />
-        <label>Huisnummer</label>
+        <label class="form__label">Huisnummer</label>
         <input type="text" id="HouseNumber" @bind-value="HouseNumber" />
-        <label>Postcode</label>
+        <label class="form__label">Postcode</label>
         <input type="text" id="ZipCode" @bind-value="ZipCode" />
-        <label>Woonplaats</label>
+        <label class="form__label">Woonplaats</label>
         <input type="text" id="City" @bind-value="City" />
-        <label>IBAN</label>
+        <label class="form__label">IBAN</label>
         <input type="text" id="IBAN" @bind-value="IBAN" /> 
     } else {
-        <label>Bedrijfsnaam</label>
+        <label class="form__label">Bedrijfsnaam</label>
         <input type="text" id="Company" @bind-value="Company" />
-        <label>Afdeling</label>
+        <label class="form__label">Afdeling</label>
         <input type="text" id="Department" @bind-value="Department" />
-        <label>Offertenummer</label>
+        <label class="form__label">Offertenummer</label>
         <input type="text" id="Quotation" @bind-value="Quotation" />
     }
 

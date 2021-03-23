@@ -1,16 +1,4 @@
-﻿section {
-    width: max(50vw, 400px);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
-}
-
-    section > label {
-        text-align: right;
-        font-weight: bold;
-    }
-
-@media print {
+﻿@media print {
     section {
         width: 100vw;
         display: grid;

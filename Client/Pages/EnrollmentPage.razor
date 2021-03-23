@@ -14,7 +14,7 @@
 
     <h2>Cursist</h2>
     @if (!studentSelected) {
-        <section>
+        <section class="form">
             <ToggleButtonComponent Option1="Opzoeken" Option2="Nieuw" Value="@option" Toggled="OnToggleButtonToggled"></ToggleButtonComponent>
         </section>
         @if (option == "Opzoeken") {
@@ -31,7 +31,7 @@
     @if (studentSelected && Student is not null && courseOverview is not null) {
 
         <StudentDetailsComponent Student="Student"></StudentDetailsComponent>
-        <section>
+        <section class="form">
             <button @onclick="Enroll">@Student.Name @Student.Surname inschrijven voor @courseOverview.Title van @courseOverview.StartDate.ToString("dd/MM/yyyy")</button>
             <button @onclick="@(()=>SelectStudent(null))">Terug</button>
         </section>

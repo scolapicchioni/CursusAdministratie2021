@@ -2,12 +2,12 @@
 @using CursusAdministratie2021.Shared.Models
 @inject IStudentsService studentsService
 
-<section>
-    <label>Naam</label>
+<section class="form">
+    <label class="form__label">Naam</label>
     <input type="text" id="Name" @bind-value="Name" />
-    <label>Achternaam</label>
+    <label class="form__label">Achternaam</label>
     <input type="text" id="Surname" @bind-value="Surname" />
-    <label>Bedrijfsnaam</label>
+    <label class="form__label">Bedrijfsnaam</label>
     <input type="text" id="CompanyName" @bind-value="CompanyName" />
     <button id="Search" @onclick="Search">Opzoeken</button>
 </section>
