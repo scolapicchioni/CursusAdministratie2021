@@ -1,5 +1,6 @@
 ﻿@using CursusAdministratie2021.Client.Core.Interfaces
 @using CursusAdministratie2021.Shared.Models
+@using CursusAdministratie2021.Shared.Validators
 @inject IStudentsService studentsService
 
 <section class="form">
@@ -31,9 +32,21 @@
     }
 
     <button id="Create" @onclick="Create">Toevoegen</button>
+    @if (errors is not null) {
+        <ul>
+            @foreach (string error in errors) {
+            <li>@error</li>    
+            }
+        </ul>
+    }    
+<p>@message</p>
 </section>
 
+
+
 @code {
+    string message = "";
+
     string Name;
     string Surname;
 
@@ -55,17 +68,29 @@
     string option2 = "Bedrijfmedewerker";
 
     string selectedOption = "Particulier";
+    FluentValidation.Results.ValidationResult results;
+    List<string> errors => results?.Errors.Select(r => r.ErrorMessage).ToList();
 
     async Task Create() {
+        
         if (selectedOption == option1) {
-            student = await studentsService.CreateStudent(new PrivateCitizen() { Name=Name, Surname = Surname, StreetName = StreetName, HouseNumber = HouseNumber, ZipCode = ZipCode, City = City, IBAN = IBAN });
+            PrivateCitizen privateCitizen = new PrivateCitizen() { Name = Name, Surname = Surname, StreetName = StreetName, HouseNumber = HouseNumber, ZipCode = ZipCode, City = City, IBAN = IBAN };
+            PrivateCitizenValidator validationRules = new PrivateCitizenValidator();
+            results = validationRules.Validate(privateCitizen);
+            if (results.IsValid) {
+                
+                student = await studentsService.CreateStudent(privateCitizen);    
+                if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(student);
+            }
         } else {
-            student = await studentsService.CreateStudent(new CompanyEmployee() { Name=Name, Surname = Surname, Company = Company, Department = Department, Quotation = Quotation });
+            CompanyEmployee companyEmployee = new CompanyEmployee() { Name = Name, Surname = Surname, Company = Company, Department = Department, Quotation = Quotation };
+            CompanyEmployeeValidator validationRules = new CompanyEmployeeValidator();
+            results = validationRules.Validate(companyEmployee);
+            if (results.IsValid) {
+                student = await studentsService.CreateStudent(companyEmployee);
+                if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(student);
+            } 
         }
-        if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(student);
-
-        //Student createdStudent = await studentsService.CreateStudent(new Student() { Name = Name, Surname = Surname });
-        //if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(createdStudent);
     }
 
     void OnToggled(string value) {
