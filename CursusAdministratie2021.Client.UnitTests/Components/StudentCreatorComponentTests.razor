@@ -61,7 +61,7 @@
   </ComponentUnderTest>
 
 @code {
-    //Bedrijfmedewerker
+        //Bedrijfmedewerker
     void Should_AddCompanyEmployee(Fixture fixture) {
         string name = "StudentName";
         string surname = "StudentSurname";
@@ -69,11 +69,9 @@
         studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<CompanyEmployee>())).ReturnsAsync(expectedStudent);
 
         var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
-        //var togglebutton = cut.FindComponent<ToggleButtonComponent>();
-        //togglebutton.SetParametersAndRender(parameters => parameters
-        //  .Add(p => p.Value, "Bedrijfmedewerker")
-        //);
-        //togglebutton.Instance.InvokeAsync(() => togglebutton.Instance.Toggled(""));
+        var togglebutton = cut.FindComponent<ToggleButtonComponent>();
+        togglebutton.Find("button.not-selected").Click();
+        
         var nameComponent = cut.Find("#Name");
         var surnameComponent = cut.Find("#Surname");
         var createComponent = cut.Find("#Create");
