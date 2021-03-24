@@ -1,12 +1,22 @@
 ﻿@using CursusAdministratie2021.Client.Core.Interfaces
 @using CursusAdministratie2021.Shared.Models
+@using FluentValidation
+@using FluentValidation.Results
 @using Moq
 @inherits TestComponentBase
 
 @code {
     Mock<IStudentsService> studentsServiceMock;
+    Mock<IValidator<CompanyEmployee>> companyEmployeeValidatorMock;
+    Mock<IValidator<PrivateCitizen>> privateCitizenValidatorMock;
+    //Mock<
     void Start(Fixture fixture) {
         studentsServiceMock = new ();
+        companyEmployeeValidatorMock = new();
+        privateCitizenValidatorMock = new();
+        fixture.Services.AddSingleton<IValidator<CompanyEmployee>>(companyEmployeeValidatorMock.Object);
+        fixture.Services.AddSingleton<IValidator<PrivateCitizen>>(privateCitizenValidatorMock.Object);
+
         fixture.Services.AddSingleton<IStudentsService>(studentsServiceMock.Object);
     }
     Student actualStudent;
@@ -27,12 +37,14 @@
 
 @code {
 
-    void Should_AddPrivateCitizen(Fixture fixture) {
+        void Should_AddPrivateCitizen(Fixture fixture) {
         string name = "StudentName";
         string surname = "StudentSurname";
         PrivateCitizen expectedStudent = new() { Id = 1, Name = name, Surname= surname };
         studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<PrivateCitizen>())).ReturnsAsync(expectedStudent);
-
+        
+        privateCitizenValidatorMock.Setup(pc => pc.Validate(It.IsAny<PrivateCitizen>())).Returns(new ValidationResult(new List<ValidationFailure>()));
+        
         var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
         
         var nameComponent = cut.Find("#Name");
@@ -68,6 +80,9 @@
         string company = "StudentCompany";
         CompanyEmployee expectedStudent = new() { Id = 1, Name = name, Surname= surname };
         studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<CompanyEmployee>())).ReturnsAsync(expectedStudent);
+
+        companyEmployeeValidatorMock.Setup(pc => pc.Validate(It.IsAny<CompanyEmployee>())).Returns(new ValidationResult(new List<ValidationFailure>()));
+        
 
         var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
         var togglebutton = cut.FindComponent<ToggleButtonComponent>();

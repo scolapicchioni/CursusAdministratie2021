@@ -1,8 +1,10 @@
 ﻿@using CursusAdministratie2021.Client.Core.Interfaces
 @using CursusAdministratie2021.Shared.Models
 @using CursusAdministratie2021.Shared.Validators
+@using FluentValidation
 @inject IStudentsService studentsService
-
+@inject IValidator<PrivateCitizen> privateCitizenValidator
+@inject IValidator<CompanyEmployee> companyEmployeeValidator
 <section class="form">
     <label class="form__label">Naam</label>
     <input type="text" id="Name" @bind-value="Name" />
@@ -75,17 +77,14 @@
         
         if (selectedOption == option1) {
             PrivateCitizen privateCitizen = new PrivateCitizen() { Name = Name, Surname = Surname, StreetName = StreetName, HouseNumber = HouseNumber, ZipCode = ZipCode, City = City, IBAN = IBAN };
-            PrivateCitizenValidator validationRules = new PrivateCitizenValidator();
-            results = validationRules.Validate(privateCitizen);
+            results = privateCitizenValidator.Validate(privateCitizen);
             if (results.IsValid) {
-                
                 student = await studentsService.CreateStudent(privateCitizen);    
                 if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(student);
             }
         } else {
             CompanyEmployee companyEmployee = new CompanyEmployee() { Name = Name, Surname = Surname, Company = Company, Department = Department, Quotation = Quotation };
-            CompanyEmployeeValidator validationRules = new CompanyEmployeeValidator();
-            results = validationRules.Validate(companyEmployee);
+            results = companyEmployeeValidator.Validate(companyEmployee);
             if (results.IsValid) {
                 student = await studentsService.CreateStudent(companyEmployee);
                 if (StudentCreated.HasDelegate) await StudentCreated.InvokeAsync(student);

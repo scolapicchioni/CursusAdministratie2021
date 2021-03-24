@@ -15,6 +15,9 @@ using CursusAdministratie2021.Client.Core.CourseParsers.CoursePropertyParsers;
 using CursusAdministratie2021.Client.Core.Interfaces;
 using CursusAdministratie2021.Client.Core.Services;
 using CursusAdministratie2021.Shared.CalendarHelpers;
+using FluentValidation;
+using CursusAdministratie2021.Shared.Models;
+using CursusAdministratie2021.Shared.Validators;
 
 namespace CursusAdministratie2021.Client
 {
@@ -42,6 +45,9 @@ namespace CursusAdministratie2021.Client
 
 
             builder.Services.AddScoped<ICalendarHelper, CalendarHelper>();
+
+            builder.Services.AddTransient<IValidator<PrivateCitizen>, PrivateCitizenValidator>();
+            builder.Services.AddTransient<IValidator<CompanyEmployee>, CompanyEmployeeValidator>();
 
             await builder.Build().RunAsync();
         }
