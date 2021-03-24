@@ -1,4 +1,5 @@
 ﻿@inherits TestComponentBase
+@using CursusAdministratie2021.Client.UnitTests.Helpers
 @using CursusAdministratie2021.Shared.CalendarHelpers
 @using CursusAdministratie2021.Shared.DTO
 @using CursusAdministratie2021.Shared.Interfaces
@@ -31,6 +32,7 @@
     
     void Setup_ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekNotSet(Fixture fixture) {
         Start(fixture);
+        fixture.Services.AddSingleton<NavigationManager, FakeNavigationManager>();
     }
     void ShouldInvoke_CoursesService_GetCoursesPerWeek_WhenYearWeekNotSet(Fixture fixture) {
         var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();
@@ -56,6 +58,7 @@
             new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
         };
         coursesOverviewServiceMock.Setup(cos => cos.GetCoursesPerWeek(yearNumber,weekNumber)).ReturnsAsync(expectedCourses);
+        fixture.Services.AddSingleton<NavigationManager, FakeNavigationManager>();
     }
     void Test_ShouldSetCoursesParameterOfCoursesOverviewComponent_WhenYearWeekNotSet(Fixture fixture) {
         var cut = fixture.GetComponentUnderTest<CoursesOverviewPage>();

@@ -65,6 +65,7 @@
     void Should_AddCompanyEmployee(Fixture fixture) {
         string name = "StudentName";
         string surname = "StudentSurname";
+        string company = "StudentCompany";
         CompanyEmployee expectedStudent = new() { Id = 1, Name = name, Surname= surname };
         studentsServiceMock.Setup(ss => ss.CreateStudent(It.IsAny<CompanyEmployee>())).ReturnsAsync(expectedStudent);
 
@@ -74,10 +75,11 @@
         
         var nameComponent = cut.Find("#Name");
         var surnameComponent = cut.Find("#Surname");
+        var companyComponent = cut.Find("#Company");
         var createComponent = cut.Find("#Create");
         nameComponent.Change(name);
         surnameComponent.Change(surname);
-
+        companyComponent.Change(company);
 
         createComponent.Click();
 
