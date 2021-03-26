@@ -66,7 +66,7 @@
 
 
 <Fixture Setup="@Setup_Should_Add"
-         Test="@Should_AddCompanyEmployee"
+         TestAsync="@Should_AddCompanyEmployee"
          Description="Should Add Company Employee" >
 <ComponentUnderTest>
     <StudentCreatorComponent StudentCreated="OnStudentCreated"></StudentCreatorComponent>
@@ -74,7 +74,7 @@
 
 @code {
         //Bedrijfmedewerker
-    void Should_AddCompanyEmployee(Fixture fixture) {
+    async Task Should_AddCompanyEmployee(Fixture fixture) {
         string name = "StudentName";
         string surname = "StudentSurname";
         string company = "StudentCompany";
@@ -83,10 +83,10 @@
 
         companyEmployeeValidatorMock.Setup(pc => pc.Validate(It.IsAny<CompanyEmployee>())).Returns(new ValidationResult(new List<ValidationFailure>()));
         
-
         var cut = fixture.GetComponentUnderTest<StudentCreatorComponent>();
+        
         var togglebutton = cut.FindComponent<ToggleButtonComponent>();
-        togglebutton.Find("button.not-selected").Click();
+        await cut.InvokeAsync(async () => await togglebutton.Instance.Toggled.InvokeAsync());
         
         var nameComponent = cut.Find("#Name");
         var surnameComponent = cut.Find("#Surname");
