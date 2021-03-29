@@ -21,7 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CursusAdministratie2021.UnitTests.Builders\CursusAdministratie2021.UnitTests.Builders.csproj" />
     <ProjectReference Include="..\Shared\CursusAdministratie2021.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Builders\" />
   </ItemGroup>
 
 </Project>

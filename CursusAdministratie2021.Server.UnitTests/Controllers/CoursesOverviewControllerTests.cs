@@ -8,6 +8,7 @@ using Moq;
 using CursusAdministratie2021.Shared.Interfaces;
 using CursusAdministratie2021.Shared.DTO;
 using CursusAdministratie2021.Server.Controllers;
+using CursusAdministratie2021.UnitTests.Builders.DTO;
 
 namespace CursusAdministratie2021.Server.UnitTests.Controllers {
     public class CoursesOverviewControllerTests {
@@ -20,9 +21,9 @@ namespace CursusAdministratie2021.Server.UnitTests.Controllers {
         public async Task GetCoursesOverview_ShouldReturn_ListOfCourses() {
             List<CourseOverview> expectedCourses;
             expectedCourses = new List<CourseOverview> {
-                new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
-                new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
-                new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
+                CourseOverviewBuilder.Default().Typical().Build(),
+                CourseOverviewBuilder.Default().Typical().Build(),
+                CourseOverviewBuilder.Default().Typical().Build()
             };
             coursesOverviewServiceMock.Setup(cos => cos.GetCoursesOverview()).ReturnsAsync(expectedCourses);
 

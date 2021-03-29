@@ -6,55 +6,62 @@ using System.Threading.Tasks;
 using CursusAdministratie2021.Shared.DTO;
 using CursusAdministratie2021.Shared.Interfaces;
 using CursusAdministratie2021.Shared.Services;
+using CursusAdministratie2021.UnitTests.Builders.DTO;
 using Moq;
 using Xunit;
 
 namespace CursusAdministratie2021.Shared.UnitTests.Services {
     public class CoursesOverviewServiceTests {
+        private Mock<ICoursesOverviewRepository> coursesOverviewRepositoryMock;
+        private CoursesOverviewService sut;
+
+        public CoursesOverviewServiceTests() {
+            coursesOverviewRepositoryMock = new();
+            sut = new (coursesOverviewRepositoryMock.Object);
+        }
+
         [Fact]
         public async Task GetCoursesOverview_ShouldReturn_ListOfCourses() {
-            Mock<ICoursesOverviewRepository> coursesOverviewRepositoryMock = new ();
-            List<CourseOverview> expectedCourses = new List<CourseOverview>() {
-                new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
-                new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
-                new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
-            };
-            coursesOverviewRepositoryMock.Setup(cor => cor.GetCoursesOverview()).ReturnsAsync(expectedCourses);
-            CoursesOverviewService sut = new CoursesOverviewService(coursesOverviewRepositoryMock.Object);
+            List<CourseOverview> expectedCourseOverviews = typicalCourseOverviews();
+            coursesOverviewRepositoryMock.Setup(cor => cor.GetCoursesOverview()).ReturnsAsync(expectedCourseOverviews);
+            
+            IEnumerable<CourseOverview> actualCourseOverviews = await sut.GetCoursesOverview();
 
-            IEnumerable<CourseOverview> actualCourses = await sut.GetCoursesOverview();
-
-            Assert.Equal(expectedCourses, actualCourses);
+            Assert.Equal(expectedCourseOverviews, actualCourseOverviews);
         }
+        
         [Fact]
         public async Task GetCoursesPerWeek_ShouldReturn_ListOfCoursesReturnedByRepository() {
             int yearNumber = 2021;
             int weekNumber = 23;
-            Mock<ICoursesOverviewRepository> coursesOverviewRepositoryMock = new();
-            List<CourseOverview> expectedCourses = new List<CourseOverview>() {
-                new CourseOverview(){StartDate = new DateTime(2021,3,15), Duration = 3, Title = "C#"},
-                new CourseOverview(){StartDate = new DateTime(2021,3,10), Duration = 5, Title = "JPA"},
-                new CourseOverview(){StartDate = new DateTime(2021,3,8), Duration = 3, Title = "Azure"}
-            };
-            coursesOverviewRepositoryMock.Setup(cor => cor.GetCoursesPerWeek(yearNumber,weekNumber)).ReturnsAsync(expectedCourses);
-            CoursesOverviewService sut = new CoursesOverviewService(coursesOverviewRepositoryMock.Object);
 
-            IEnumerable<CourseOverview> actualCourses = await sut.GetCoursesPerWeek(yearNumber,weekNumber);
+            List<CourseOverview> expectedCourseOverviews = typicalCourseOverviews();
+            coursesOverviewRepositoryMock.Setup(cor => cor.GetCoursesPerWeek(yearNumber,weekNumber)).ReturnsAsync(expectedCourseOverviews);
+            
+            IEnumerable<CourseOverview> actualCourseOverviews = await sut.GetCoursesPerWeek(yearNumber,weekNumber);
 
-            Assert.Equal(expectedCourses, actualCourses);
+            Assert.Equal(expectedCourseOverviews, actualCourseOverviews);
         }
 
         [Fact]
         public async Task GetCourseOverviewByEditionId_ShouldReturn_Course() {
-            CourseOverview expectedCourseOverview = new CourseOverview() { StartDate = new DateTime(2021, 3, 10), Duration = 5, Title = "JPA", EditionId = 2 };
-            Mock<ICoursesOverviewRepository> coursesOverviewRepositoryMock = new();
+            int editionId = 2;
+            CourseOverview expectedCourseOverview = CourseOverviewBuilder.Default().WithEditionId(editionId).Build();
 
-            coursesOverviewRepositoryMock.Setup(cor => cor.GetCourseOverviewByEditionId(2)).ReturnsAsync(expectedCourseOverview);
-            CoursesOverviewService sut = new CoursesOverviewService(coursesOverviewRepositoryMock.Object);
+            coursesOverviewRepositoryMock.Setup(cor => cor.GetCourseOverviewByEditionId(editionId)).ReturnsAsync(expectedCourseOverview);
 
-            CourseOverview actualCourse = await sut.GetCourseOverviewByEditionId(2);
+            CourseOverview actualCourseOverview = await sut.GetCourseOverviewByEditionId(editionId);
 
-            Assert.Equal(expectedCourseOverview, actualCourse);
+            Assert.Equal(expectedCourseOverview, actualCourseOverview);
         }
+
+        private static List<CourseOverview> typicalCourseOverviews() {
+            return new List<CourseOverview>() {
+                CourseOverviewBuilder.Default().Typical().Build(),
+                CourseOverviewBuilder.Default().Typical().Build(),
+                CourseOverviewBuilder.Default().Typical().Build()
+            };
+        }
+
     }
 }
